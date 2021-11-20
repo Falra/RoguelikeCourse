@@ -18,7 +18,11 @@ public:
 	AVDCharacter();
 
 protected:
+
+	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* CameraComponent;
+
+	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* SpringArmComponent;
 	
 	// Called when the game starts or when spawned
