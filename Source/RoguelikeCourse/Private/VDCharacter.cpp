@@ -28,23 +28,6 @@ void AVDCharacter::BeginPlay()
 	
 }
 
-void AVDCharacter::MoveForward(float Value)
-{
-	FRotator ControlRotation = GetControlRotation();
-	ControlRotation.Pitch = 0.0f;
-	ControlRotation.Roll = 0.0f;
-	AddMovementInput(ControlRotation.Vector(), Value);
-}
-
-void AVDCharacter::MoveRight(float Value)
-{
-	FRotator ControlRotation = GetControlRotation();
-	ControlRotation.Pitch = 0.0f;
-	ControlRotation.Roll = 0.0f;
-	FVector RightVector = FRotationMatrix(ControlRotation).GetScaledAxis(EAxis::Y);
-	AddMovementInput(RightVector, Value);
-}
-
 // Called every frame
 void AVDCharacter::Tick(float DeltaTime)
 {
@@ -77,6 +60,28 @@ void AVDCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAxis("MoveRight", this, &AVDCharacter::MoveRight);
 	
 	PlayerInputComponent->BindAxis("Turn", this, &APawn::AddControllerYawInput);
-	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput); 
+	PlayerInputComponent->BindAxis("LookUp", this, &APawn::AddControllerPitchInput);
+
+	PlayerInputComponent->BindAction("PrimaryAttack", IE_Pressed, this, &AVDCharacter::PrimaryAttack);
 }
 
+void AVDCharacter::MoveForward(float Value)
+{
+	FRotator ControlRotation = GetControlRotation();
+	ControlRotation.Pitch = 0.0f;
+	ControlRotation.Roll = 0.0f;
+	AddMovementInput(ControlRotation.Vector(), Value);
+}
+
+void AVDCharacter::MoveRight(float Value)
+{
+	FRotator ControlRotation = GetControlRotation();
+	ControlRotation.Pitch = 0.0f;
+	ControlRotation.Roll = 0.0f;
+	FVector RightVector = FRotationMatrix(ControlRotation).GetScaledAxis(EAxis::Y);
+	AddMovementInput(RightVector, Value);
+}
+void AVDCharacter::PrimaryAttack()
+{
+	
+}
