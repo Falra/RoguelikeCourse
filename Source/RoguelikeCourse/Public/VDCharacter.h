@@ -3,7 +3,9 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Camera/CameraComponent.h"
 #include "GameFramework/Character.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "VDCharacter.generated.h"
 
 UCLASS()
@@ -16,6 +18,9 @@ public:
 	AVDCharacter();
 
 protected:
+	UCameraComponent* CameraComponent;
+	USpringArmComponent* SpringArmComponent;
+	
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
