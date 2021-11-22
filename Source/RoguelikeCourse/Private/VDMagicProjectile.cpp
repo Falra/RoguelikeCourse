@@ -12,6 +12,9 @@ AVDMagicProjectile::AVDMagicProjectile()
 	PrimaryActorTick.bCanEverTick = true;
 
 	SphereComponent = CreateDefaultSubobject<USphereComponent>("SphereComponent");
+	//SphereComponent->SetCollisionObjectType(ECC_WorldDynamic);
+	SphereComponent->SetCollisionProfileName("Projectile");
+
 	RootComponent = SphereComponent;
 
 	EffectComponent = CreateDefaultSubobject<UParticleSystemComponent>("EffectComponent");
