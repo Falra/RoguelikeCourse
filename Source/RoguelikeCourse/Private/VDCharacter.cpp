@@ -83,5 +83,10 @@ void AVDCharacter::MoveRight(float Value)
 }
 void AVDCharacter::PrimaryAttack()
 {
+	FTransform SpawnTM = FTransform(GetControlRotation(), GetActorLocation());
+
+	FActorSpawnParameters SpawnParams;
+	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	
+	GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);	
 }
