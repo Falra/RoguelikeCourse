@@ -3,6 +3,11 @@
 
 #include "VDItemChest.h"
 
+void AVDItemChest::Interact_Implementation(APawn* InstigatorPawn)
+{
+	
+}
+
 // Sets default values
 AVDItemChest::AVDItemChest()
 {

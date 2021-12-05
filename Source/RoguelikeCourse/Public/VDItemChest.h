@@ -3,13 +3,16 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "VDGameplayInterface.h"
 #include "GameFramework/Actor.h"
 #include "VDItemChest.generated.h"
 
 UCLASS()
-class ROGUELIKECOURSE_API AVDItemChest : public AActor
+class ROGUELIKECOURSE_API AVDItemChest : public AActor, public IVDGameplayInterface
 {
 	GENERATED_BODY()
+
+	void Interact_Implementation(APawn* InstigatorPawn);
 	
 public:	
 	// Sets default values for this actor's properties
