@@ -5,7 +5,7 @@
 
 void AVDItemChest::Interact_Implementation(APawn* InstigatorPawn)
 {
-	
+	LidMesh->SetRelativeRotation(FRotator(TargetPitch, 0, 0));
 }
 
 // Sets default values
@@ -19,6 +19,8 @@ AVDItemChest::AVDItemChest()
 
 	LidMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("LidMesh"));
 	LidMesh->SetupAttachment(BaseMesh);
+
+	TargetPitch = 110;
 
 }
 

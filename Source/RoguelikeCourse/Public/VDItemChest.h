@@ -12,11 +12,15 @@ class ROGUELIKECOURSE_API AVDItemChest : public AActor, public IVDGameplayInterf
 {
 	GENERATED_BODY()
 
-	void Interact_Implementation(APawn* InstigatorPawn);
-	
 public:	
+
+	UPROPERTY(EditAnywhere)
+	float TargetPitch;
+	
 	// Sets default values for this actor's properties
 	AVDItemChest();
+
+	void Interact_Implementation(APawn* InstigatorPawn);
 
 protected:
 	UPROPERTY(VisibleAnywhere)
