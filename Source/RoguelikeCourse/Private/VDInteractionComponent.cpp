@@ -47,14 +47,26 @@ void UVDInteractionComponent::PrimaryInteract()
 	MyOwner->GetActorEyesViewPoint(EyeLocation, EyeRotation);
 	FVector End = EyeLocation + (EyeRotation.Vector() * 1000);
 
-	FHitResult Hit;
-	bool bBlockingHit = GetWorld()->LineTraceSingleByObjectType(Hit, EyeLocation, End, ObjectQueryParams);
-	AActor* HitActor = Hit.GetActor();
-	if(HitActor && HitActor->Implements<UVDGameplayInterface>())
-	{
-		APawn* MyPawn = Cast<APawn>(MyOwner);
-		IVDGameplayInterface::Execute_Interact(HitActor, MyPawn);
-	}
+	// FHitResult Hit;
+	// bool bBlockingHit = GetWorld()->LineTraceSingleByObjectType(Hit, EyeLocation, End, ObjectQueryParams);
+
+	FCollisionShape Shape;
+	float Radius = 30.0f;
+	Shape.SetSphere(Radius);
+	TArray<FHitResult> Hits;
+	bool bBlockingHit = GetWorld()->SweepMultiByObjectType(Hits, EyeLocation, End, FQuat::Identity, ObjectQueryParams, Shape);
 	FColor LineColor = bBlockingHit ? FColor::Green : FColor::Red;
+	
+	for (FHitResult Hit : Hits)
+	{
+		AActor* HitActor = Hit.GetActor();
+		if (HitActor && HitActor->Implements<UVDGameplayInterface>())
+		{
+			APawn* MyPawn = Cast<APawn>(MyOwner);
+			IVDGameplayInterface::Execute_Interact(HitActor, MyPawn);
+		}
+		DrawDebugSphere(GetWorld(), Hit.ImpactPoint, Radius, 32, LineColor, false, 2.0f);
+	}
+
 	DrawDebugLine(GetWorld(), EyeLocation, End, LineColor, false, 2.0f, 0 , 2.0f);
 }
