@@ -89,7 +89,7 @@ void AVDCharacter::MoveRight(float Value)
 }
 void AVDCharacter::PrimaryAttack()
 {
-	PlayAnimMontage(AttackAnimation);
+	PlayAnimMontage(AtackAnimation);
 	
 	FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
 	FTransform SpawnTM = FTransform(GetControlRotation(), HandLocation);
