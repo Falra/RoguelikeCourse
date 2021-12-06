@@ -19,9 +19,9 @@ protected:
 	
 	UPROPERTY(EditAnywhere, Category = "Attack")
 	TSubclassOf<AActor> ProjectileClass;
-
+	
 	UPROPERTY(EditAnywhere, Category = "Attack")
-	UAnimMontage* AtackAnimation;
+	UAnimMontage* AttackAnimation;
 
 public:
 	// Sets default values for this character's properties
