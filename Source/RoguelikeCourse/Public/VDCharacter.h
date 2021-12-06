@@ -8,6 +8,8 @@
 #include "GameFramework/SpringArmComponent.h"
 #include "VDCharacter.generated.h"
 
+class UVDInteractionComponent;
+
 UCLASS()
 class ROGUELIKECOURSE_API AVDCharacter : public ACharacter
 {
@@ -30,7 +32,12 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	USpringArmComponent* SpringArmComponent;
 
+	UPROPERTY(VisibleAnywhere)
+	UVDInteractionComponent* InteractionComponent;
+
 	void PrimaryAttack();
+	
+	void PrimaryInteract();
 
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;

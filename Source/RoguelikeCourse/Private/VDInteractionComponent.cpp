@@ -3,6 +3,8 @@
 
 #include "VDInteractionComponent.h"
 
+#include "VDGameplayInterface.h"
+
 // Sets default values for this component's properties
 UVDInteractionComponent::UVDInteractionComponent()
 {
@@ -32,3 +34,24 @@ void UVDInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType
 	// ...
 }
 
+void UVDInteractionComponent::PrimaryInteract()
+{
+	FCollisionObjectQueryParams ObjectQueryParams;
+	ObjectQueryParams.AddObjectTypesToQuery(ECC_WorldDynamic);
+
+	AActor* MyOwner = GetOwner();
+	
+	FVector EyeLocation;
+	FRotator EyeRotation;
+	MyOwner->GetActorEyesViewPoint(EyeLocation, EyeRotation);
+	FVector End = EyeLocation + (EyeRotation.Vector() * 1000);
+
+	FHitResult Hit;
+	GetWorld()->LineTraceSingleByObjectType(Hit, EyeLocation, End, ObjectQueryParams);
+	AActor* HitActor = Hit.GetActor();
+	if(HitActor && HitActor->Implements<UVDGameplayInterface>())
+	{
+		APawn* MyPawn = Cast<APawn>(MyOwner);
+		IVDGameplayInterface::Execute_Interact(HitActor, MyPawn);
+	}
+}

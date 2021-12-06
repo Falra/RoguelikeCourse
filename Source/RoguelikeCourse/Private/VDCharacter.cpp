@@ -3,6 +3,7 @@
 
 #include "VDCharacter.h"
 #include "DrawDebugHelpers.h"
+#include "VDInteractionComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
@@ -16,6 +17,7 @@ AVDCharacter::AVDCharacter()
 	SpringArmComponent->SetupAttachment(RootComponent);
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
 	CameraComponent->SetupAttachment(SpringArmComponent);
+	InteractionComponent = CreateDefaultSubobject<UVDInteractionComponent>("InteractionComponent");
 
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	bUseControllerRotationYaw = false;
@@ -65,6 +67,8 @@ void AVDCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAction("PrimaryAttack", IE_Pressed, this, &AVDCharacter::PrimaryAttack);
 
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
+
+	PlayerInputComponent->BindAction("PrimaryInteract", IE_Pressed, this, &AVDCharacter::PrimaryInteract);
 }
 
 void AVDCharacter::MoveForward(float Value)
@@ -92,4 +96,9 @@ void AVDCharacter::PrimaryAttack()
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	
 	GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);	
+}
+
+void AVDCharacter::PrimaryInteract()
+{
+	InteractionComponent->PrimaryInteract();
 }
