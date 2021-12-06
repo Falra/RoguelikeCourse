@@ -3,6 +3,7 @@
 
 #include "VDInteractionComponent.h"
 
+#include "DrawDebugHelpers.h"
 #include "VDGameplayInterface.h"
 
 // Sets default values for this component's properties
@@ -47,11 +48,13 @@ void UVDInteractionComponent::PrimaryInteract()
 	FVector End = EyeLocation + (EyeRotation.Vector() * 1000);
 
 	FHitResult Hit;
-	GetWorld()->LineTraceSingleByObjectType(Hit, EyeLocation, End, ObjectQueryParams);
+	bool bBlockingHit = GetWorld()->LineTraceSingleByObjectType(Hit, EyeLocation, End, ObjectQueryParams);
 	AActor* HitActor = Hit.GetActor();
 	if(HitActor && HitActor->Implements<UVDGameplayInterface>())
 	{
 		APawn* MyPawn = Cast<APawn>(MyOwner);
 		IVDGameplayInterface::Execute_Interact(HitActor, MyPawn);
 	}
+	FColor LineColor = bBlockingHit ? FColor::Green : FColor::Red;
+	DrawDebugLine(GetWorld(), EyeLocation, End, LineColor, false, 2.0f, 0 , 2.0f);
 }
