@@ -87,10 +87,19 @@ void AVDCharacter::MoveRight(float Value)
 	FVector RightVector = FRotationMatrix(ControlRotation).GetScaledAxis(EAxis::Y);
 	AddMovementInput(RightVector, Value);
 }
+
 void AVDCharacter::PrimaryAttack()
 {
 	PlayAnimMontage(AttackAnimation);
-	
+
+	GetWorldTimerManager().SetTimer(TimerHandle_PrimaryAttack, this, &AVDCharacter::PrimaryAttack_TimeElapsed, TimerAttack_InRate);
+	//GetWorldTimerManager().ClearTimer(TimerHandle_PrimaryAttack);
+
+}
+
+void AVDCharacter::PrimaryAttack_TimeElapsed()
+{
+
 	FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
 	FTransform SpawnTM = FTransform(GetControlRotation(), HandLocation);
 	
@@ -98,6 +107,7 @@ void AVDCharacter::PrimaryAttack()
 	SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	
 	GetWorld()->SpawnActor<AActor>(ProjectileClass, SpawnTM, SpawnParams);	
+	
 }
 
 void AVDCharacter::PrimaryInteract()

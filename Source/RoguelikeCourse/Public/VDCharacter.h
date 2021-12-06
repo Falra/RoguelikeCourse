@@ -23,6 +23,11 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Attack")
 	UAnimMontage* AttackAnimation;
 
+	UPROPERTY(EditAnywhere, Category = "Attack")
+	float TimerAttack_InRate = 0.2f;
+
+	FTimerHandle TimerHandle_PrimaryAttack;
+
 public:
 	// Sets default values for this character's properties
 	AVDCharacter();
@@ -39,7 +44,9 @@ protected:
 	UVDInteractionComponent* InteractionComponent;
 
 	void PrimaryAttack();
-	
+
+	void PrimaryAttack_TimeElapsed();
+
 	void PrimaryInteract();
 
 	// Called when the game starts or when spawned
