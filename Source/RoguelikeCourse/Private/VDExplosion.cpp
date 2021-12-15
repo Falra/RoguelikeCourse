@@ -20,7 +20,8 @@ AVDExplosion::AVDExplosion()
 	RadialForceComponent->ImpulseStrength = 1000;
 	RadialForceComponent->bImpulseVelChange = 1;
 	RadialForceComponent->bIgnoreOwningActor = 0;
-	
+	RadialForceComponent->SetAutoActivate(false);
+	RadialForceComponent->AddCollisionChannelToAffect(ECC_WorldDynamic);
 }
 
 // Called when the game starts or when spawned
