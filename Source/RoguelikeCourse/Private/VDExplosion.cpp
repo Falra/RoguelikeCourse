@@ -3,6 +3,8 @@
 
 #include "VDExplosion.h"
 
+#include "DrawDebugHelpers.h"
+
 // Sets default values
 AVDExplosion::AVDExplosion()
 {
@@ -45,6 +47,8 @@ void AVDExplosion::OnComponentHit(UPrimitiveComponent* HitComp, AActor* OtherAct
 	{
 		if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("I Hit: %s"), *OtherActor->GetName()));
 		RadialForceComponent->FireImpulse();
+		FString CombinedString = FString::Printf(TEXT("Explosion hit %s at %s"), *GetNameSafe(OtherActor), *Hit.ImpactPoint.ToString());
+		DrawDebugString(GetWorld(), Hit.ImpactPoint, CombinedString, nullptr, FColor::Green, 2.0f, true);
 	}	
 }
 
