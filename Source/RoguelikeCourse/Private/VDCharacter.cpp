@@ -118,4 +118,6 @@ void AVDCharacter::PrimaryAttack_TimeElapsed()
 void AVDCharacter::PrimaryInteract()
 {
 	InteractionComponent->PrimaryInteract();
+	// TODO: temporary for testing
+	AttributeComponent->ApplyHealthChange(-10.0f);
 }
