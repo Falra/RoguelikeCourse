@@ -17,12 +17,12 @@ public:
 	UVDAttributeComponent();
 
 protected:
-	// Called when the game starts
-	virtual void BeginPlay() override;
-
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Attributes")
+	float Health;
+	
 public:	
-	// Called every frame
-	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-		
+	UFUNCTION(BlueprintCallable, Category = "Attributes")
+	bool ApplyHealthChange(float DeltaHealth);
+
 };
