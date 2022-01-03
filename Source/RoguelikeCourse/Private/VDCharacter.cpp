@@ -4,6 +4,9 @@
 #include "VDCharacter.h"
 #include "DrawDebugHelpers.h"
 #include "VDInteractionComponent.h"
+#include "VDAttributeComponent.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 // Sets default values
@@ -18,7 +21,8 @@ AVDCharacter::AVDCharacter()
 	CameraComponent = CreateDefaultSubobject<UCameraComponent>("CameraComponent");
 	CameraComponent->SetupAttachment(SpringArmComponent);
 	InteractionComponent = CreateDefaultSubobject<UVDInteractionComponent>("InteractionComponent");
-
+	AttributeComponent = CreateDefaultSubobject<UVDAttributeComponent>("AttributeComponent");
+	
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	bUseControllerRotationYaw = false;
 }

@@ -3,12 +3,13 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Camera/CameraComponent.h"
 #include "GameFramework/Character.h"
-#include "GameFramework/SpringArmComponent.h"
 #include "VDCharacter.generated.h"
 
+class USpringArmComponent;
+class UCameraComponent;
 class UVDInteractionComponent;
+class UVDAttributeComponent;
 
 UCLASS()
 class ROGUELIKECOURSE_API AVDCharacter : public ACharacter
@@ -43,6 +44,9 @@ protected:
 	UPROPERTY(VisibleAnywhere)
 	UVDInteractionComponent* InteractionComponent;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UVDAttributeComponent* AttributeComponent;
+	
 	void PrimaryAttack();
 
 	void PrimaryAttack_TimeElapsed();
