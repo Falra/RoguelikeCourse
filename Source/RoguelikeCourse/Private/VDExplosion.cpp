@@ -4,6 +4,7 @@
 #include "VDExplosion.h"
 
 #include "DrawDebugHelpers.h"
+#include "VDAttributeComponent.h"
 
 // Sets default values
 AVDExplosion::AVDExplosion()
@@ -47,6 +48,14 @@ void AVDExplosion::OnComponentHit(UPrimitiveComponent* HitComp, AActor* OtherAct
 	{
 		if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, FString::Printf(TEXT("I Hit: %s"), *OtherActor->GetName()));
 		RadialForceComponent->FireImpulse();
+		// deal damage
+		// UVDAttributeComponent* AttributeComponent = Cast<UVDAttributeComponent>(OtherActor->GetComponentByClass(UVDAttributeComponent::StaticClass()));
+		UVDAttributeComponent* AttributeComponent = OtherActor->FindComponentByClass<UVDAttributeComponent>();
+		if(AttributeComponent)
+		{
+			AttributeComponent->ApplyHealthChange(-50.0f);
+		}
+		// debug string
 		FString CombinedString = FString::Printf(TEXT("Explosion hit %s at %s"), *GetNameSafe(OtherActor), *Hit.ImpactPoint.ToString());
 		DrawDebugString(GetWorld(), Hit.ImpactPoint, CombinedString, nullptr, FColor::Green, 2.0f, true);
 	}	
