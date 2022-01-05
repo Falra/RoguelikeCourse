@@ -6,6 +6,8 @@
 #include "Components/ActorComponent.h"
 #include "VDAttributeComponent.generated.h"
 
+class UVDAttributeComponent;
+
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnHealthChanged, AActor*, InstigatorActor, UVDAttributeComponent*, OwningComponent, float, NewHealth, float, DeltaHealth);
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
