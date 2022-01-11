@@ -22,18 +22,20 @@ protected:
 	TSubclassOf<AActor> ProjectileClass;
 	
 	UPROPERTY(EditAnywhere, Category = "Attack")
+	TSubclassOf<AActor> BlackHoleProjectileClass;
+
+	UPROPERTY(EditAnywhere, Category = "Attack")
+	TSubclassOf<AActor> DashProjectileClass;
+	
+	UPROPERTY(EditAnywhere, Category = "Attack")
 	UAnimMontage* AttackAnimation;
 
 	UPROPERTY(EditAnywhere, Category = "Attack")
 	float TimerAttack_InRate = 0.2f;
 
 	FTimerHandle TimerHandle_PrimaryAttack;
-
-public:
-	// Sets default values for this character's properties
-	AVDCharacter();
-
-protected:
+	FTimerHandle TimerHandle_BlackholeAttack;
+	FTimerHandle TimerHandle_Dash;
 
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* CameraComponent;
@@ -51,17 +53,27 @@ protected:
 
 	void PrimaryAttack_TimeElapsed();
 
+	void BlackHoleAttack();
+
+	void BlackholeAttack_TimeElapsed();
+
+	void Dash();
+
+	void Dash_TimeElapsed();
+
+	// Re-use spawn logic between attacks
+	void SpawnProjectile(TSubclassOf<AActor> ClassToSpawn);
+	
 	void PrimaryInteract();
-
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
+	
 	void MoveForward(float Value);
+
 	void MoveRight(float Value);
 
 public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
+
+	// Sets default values for this character's properties
+	AVDCharacter();
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
