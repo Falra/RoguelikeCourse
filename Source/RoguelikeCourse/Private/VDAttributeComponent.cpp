@@ -17,3 +17,8 @@ bool UVDAttributeComponent::ApplyHealthChange(float DeltaHealth)
 	return true;
 }
 
+bool UVDAttributeComponent::IsAlive() const
+{
+	return Health > 0.0f;
+}
+

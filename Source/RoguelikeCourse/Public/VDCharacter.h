@@ -70,6 +70,11 @@ protected:
 
 	void MoveRight(float Value);
 
+	UFUNCTION()
+	void OnHealthChanged(AActor* InstigatorActor, UVDAttributeComponent* OwningComponent, float NewHealth, float DeltaHealth);
+
+	virtual void PostInitializeComponents() override;
+
 public:	
 
 	// Sets default values for this character's properties

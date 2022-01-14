@@ -29,5 +29,8 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
 	bool ApplyHealthChange(float DeltaHealth);
+	
+	UFUNCTION(BlueprintCallable, Category = "Attributes")
+    bool IsAlive() const;
 
 };

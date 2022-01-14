@@ -30,6 +30,14 @@ AVDCharacter::AVDCharacter()
 	bUseControllerRotationYaw = false;
 }
 
+void AVDCharacter::PostInitializeComponents()
+{
+	Super::PostInitializeComponents();
+	
+	AttributeComponent->OnHealthChanged.AddDynamic(this, &AVDCharacter::OnHealthChanged);
+}
+
+
 /*
 // Called every frame
 void AVDCharacter::Tick(float DeltaTime)
@@ -193,4 +201,14 @@ void AVDCharacter::PrimaryInteract()
 	InteractionComponent->PrimaryInteract();
 	// TODO: temporary for testing
 	AttributeComponent->ApplyHealthChange(-10.0f);
+}
+
+void AVDCharacter::OnHealthChanged(AActor* InstigatorActor, UVDAttributeComponent* OwningComponent, float NewHealth,
+	float DeltaHealth)
+{
+	if (NewHealth <= 0.0f && DeltaHealth < 0.0f)
+	{
+		APlayerController* PC = Cast<APlayerController>(GetController());
+		DisableInput(PC);
+	}
 }
