@@ -3,3 +3,9 @@
 
 #include "AI/VDAIController.h"
 
+void AVDAIController::BeginPlay()
+{
+	Super::BeginPlay();
+
+	RunBehaviorTree(BehaviorTree);
+}

@@ -13,5 +13,9 @@ UCLASS()
 class ROGUELIKECOURSE_API AVDAIController : public AAIController
 {
 	GENERATED_BODY()
-	
+protected:
+	virtual void BeginPlay() override;
+
+	UPROPERTY(EditDefaultsOnly, Category = "AI")
+	UBehaviorTree* BehaviorTree;
 };
