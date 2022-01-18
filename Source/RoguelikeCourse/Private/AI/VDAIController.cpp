@@ -16,5 +16,6 @@ void AVDAIController::BeginPlay()
 	if(MyPawn)
 	{
 		GetBlackboardComponent()->SetValueAsVector("MoveToLocation", MyPawn->GetActorLocation());
+		GetBlackboardComponent()->SetValueAsObject("TargetActor", MyPawn);
 	}
 }
