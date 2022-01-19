@@ -25,7 +25,11 @@ void UVDBTService_CheckAttackRange::TickNode(UBehaviorTreeComponent& OwnerComp, 
 				{
 					float DistanceToPlayer = FVector::Distance(PlayerActor->GetActorLocation(), AIPawn->GetActorLocation());
 					bool bWithinAttackRange = DistanceToPlayer < 2000.0f;
-					bool bHasLOS = AIController->LineOfSightTo(PlayerActor);
+					bool bHasLOS = false;
+					if(bWithinAttackRange)
+					{
+						bHasLOS = AIController->LineOfSightTo(PlayerActor);
+					}
 					BlackboardComponent->SetValueAsBool(AttackRangeKey.SelectedKeyName, (bWithinAttackRange && bHasLOS));
 				}
 			}
