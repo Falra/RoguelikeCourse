@@ -17,6 +17,12 @@ class ROGUELIKECOURSE_API AVDCharacter : public ACharacter
 	GENERATED_BODY()
 
 protected:
+	/* VisibleAnywhere = read-only, still useful to view in-editor and enforce a convention. */
+	UPROPERTY(VisibleAnywhere, Category = "Effects")
+	FName TimeToHitParamName;
+
+	UPROPERTY(VisibleAnywhere, Category = "Effects")
+	FName HandSocketName;
 	
 	UPROPERTY(EditAnywhere, Category = "Attack")
 	TSubclassOf<AActor> ProjectileClass;
@@ -33,6 +39,10 @@ protected:
 	UPROPERTY(EditAnywhere, Category = "Attack")
 	float TimerAttack_InRate = 0.2f;
 
+	/* Particle System played during attack animation */
+	UPROPERTY(EditAnywhere, Category = "Attack")
+	UParticleSystem* CastingEffect;
+	
 	FTimerHandle TimerHandle_PrimaryAttack;
 	FTimerHandle TimerHandle_BlackholeAttack;
 	FTimerHandle TimerHandle_Dash;
@@ -59,6 +69,8 @@ protected:
 
 	void Dash();
 
+	void StartAttackEffects();
+	
 	void Dash_TimeElapsed();
 
 	// Re-use spawn logic between attacks

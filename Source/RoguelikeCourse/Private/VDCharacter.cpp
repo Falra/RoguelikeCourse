@@ -8,6 +8,7 @@
 #include "Camera/CameraComponent.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AVDCharacter::AVDCharacter()
@@ -28,6 +29,9 @@ AVDCharacter::AVDCharacter()
 	
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	bUseControllerRotationYaw = false;
+	
+	TimeToHitParamName = "TimeToHit";
+	HandSocketName = "Muzzle_01";
 }
 
 void AVDCharacter::PostInitializeComponents()
@@ -110,7 +114,7 @@ void AVDCharacter::MoveRight(float Value)
 
 void AVDCharacter::PrimaryAttack()
 {
-	PlayAnimMontage(AttackAnimation);
+	StartAttackEffects();
 
 	GetWorldTimerManager().SetTimer(TimerHandle_PrimaryAttack, this, &AVDCharacter::PrimaryAttack_TimeElapsed, TimerAttack_InRate);
 	//GetWorldTimerManager().ClearTimer(TimerHandle_PrimaryAttack);
@@ -125,7 +129,7 @@ void AVDCharacter::PrimaryAttack_TimeElapsed()
 
 void AVDCharacter::BlackHoleAttack()
 {
-	PlayAnimMontage(AttackAnimation);
+	StartAttackEffects();
 
 	GetWorldTimerManager().SetTimer(TimerHandle_BlackholeAttack, this, &AVDCharacter::BlackholeAttack_TimeElapsed, TimerAttack_InRate);
 }
@@ -139,11 +143,18 @@ void AVDCharacter::BlackholeAttack_TimeElapsed()
 
 void AVDCharacter::Dash()
 {
-	PlayAnimMontage(AttackAnimation);
+	StartAttackEffects();
 
 	GetWorldTimerManager().SetTimer(TimerHandle_Dash, this, &AVDCharacter::Dash_TimeElapsed, TimerAttack_InRate);
 }
 
+void AVDCharacter::StartAttackEffects()
+{
+	PlayAnimMontage(AttackAnimation);
+
+	UGameplayStatics::SpawnEmitterAttached(CastingEffect, GetMesh(), HandSocketName, FVector::ZeroVector, FRotator::ZeroRotator, EAttachLocation::SnapToTarget);
+
+}
 
 void AVDCharacter::Dash_TimeElapsed()
 {
@@ -154,7 +165,7 @@ void AVDCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
 {
 	if (ensureAlways(ClassToSpawn))
 	{
-		FVector HandLocation = GetMesh()->GetSocketLocation("Muzzle_01");
+		FVector HandLocation = GetMesh()->GetSocketLocation(HandSocketName);
 
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
@@ -206,6 +217,11 @@ void AVDCharacter::PrimaryInteract()
 void AVDCharacter::OnHealthChanged(AActor* InstigatorActor, UVDAttributeComponent* OwningComponent, float NewHealth,
 	float DeltaHealth)
 {
+	if (DeltaHealth < 0.0f)
+	{
+		GetMesh()->SetScalarParameterValueOnMaterials(TimeToHitParamName, GetWorld()->TimeSeconds);
+	}
+	
 	if (NewHealth <= 0.0f && DeltaHealth < 0.0f)
 	{
 		APlayerController* PC = Cast<APlayerController>(GetController());
