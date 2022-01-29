@@ -181,8 +181,6 @@ void AVDCharacter::SpawnProjectile(TSubclassOf<AActor> ClassToSpawn)
 void AVDCharacter::PrimaryInteract()
 {
 	InteractionComponent->PrimaryInteract();
-	// TODO: temporary for testing
-	AttributeComponent->ApplyHealthChange(-10.0f);
 }
 
 void AVDCharacter::OnHealthChanged(AActor* InstigatorActor, UVDAttributeComponent* OwningComponent, float NewHealth,
