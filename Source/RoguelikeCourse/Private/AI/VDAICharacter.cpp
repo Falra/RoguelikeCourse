@@ -11,6 +11,8 @@
 AVDAICharacter::AVDAICharacter()
 {
  	PawnSensingComp = CreateDefaultSubobject<UPawnSensingComponent>("PawnSensingComp");
+
+	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 }
 
 void AVDAICharacter::PostInitializeComponents()
@@ -27,7 +29,7 @@ void AVDAICharacter::OnPawnSeen(APawn* Pawn)
 	{
 		UBlackboardComponent* BlackboardComponent = AIController->GetBlackboardComponent();
 		BlackboardComponent->SetValueAsObject("TargetActor", Pawn);
-		DrawDebugString(GetWorld(), GetActorLocation(), "PLAYER SPOTTED", nullptr, FColor::White, 4.0f, true);
+		// DrawDebugString(GetWorld(), GetActorLocation(), "PLAYER SPOTTED", nullptr, FColor::White, 4.0f, true);
 	}
 	
 }
