@@ -3,6 +3,7 @@
 
 #include "VDGameModeBase.h"
 
+#include "DrawDebugHelpers.h"
 #include "EngineUtils.h"
 #include "VDAttributeComponent.h"
 #include "AI/VDAICharacter.h"
@@ -44,12 +45,14 @@ void AVDGameModeBase::OnSpawnBotQueryCompleted(UEnvQueryInstanceBlueprintWrapper
 	{
 		AVDAICharacter* Bot = *It;
 		UVDAttributeComponent* AttributeComponent = Cast<UVDAttributeComponent>(Bot->GetComponentByClass(UVDAttributeComponent::StaticClass()));
-		if(AttributeComponent && AttributeComponent->IsAlive())
+		if(ensure(AttributeComponent) && AttributeComponent->IsAlive())
 		{
 			NumOfAliveBots++;
 		}
 	}
 
+	UE_LOG(LogTemp, Log, TEXT("Found %i alive bots."), NumOfAliveBots)
+	
 	float MaxBotCount = 10.0f;
 
 	if(DifficultyCurve)
@@ -59,6 +62,7 @@ void AVDGameModeBase::OnSpawnBotQueryCompleted(UEnvQueryInstanceBlueprintWrapper
 	
 	if (NumOfAliveBots >= MaxBotCount)
 	{
+		UE_LOG(LogTemp, Log, TEXT("At maximum bots capacity. Skipping bot spawn."));
 		return;
 	}
 	
@@ -68,5 +72,7 @@ void AVDGameModeBase::OnSpawnBotQueryCompleted(UEnvQueryInstanceBlueprintWrapper
 	if(isResult && Locations.IsValidIndex(0))
 	{
 		GetWorld()->SpawnActor<AActor>(MinionClass, Locations[0], FRotator::ZeroRotator);
+
+		DrawDebugSphere(GetWorld(), Locations[0], 50.0f, 20, FColor::Blue, false, 60.0f);
 	}
 }

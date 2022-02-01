@@ -6,6 +6,7 @@
 #include "GameFramework/Character.h"
 #include "VDAICharacter.generated.h"
 
+class UVDAttributeComponent;
 class  UPawnSensingComponent;
 
 UCLASS()
@@ -23,6 +24,9 @@ protected:
 	
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	UPawnSensingComponent* PawnSensingComp;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UVDAttributeComponent* AttributeComponent;
 
 	UFUNCTION()
 	void OnPawnSeen(APawn* Pawn);
