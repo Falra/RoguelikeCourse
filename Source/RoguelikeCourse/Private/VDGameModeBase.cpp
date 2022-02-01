@@ -3,6 +3,9 @@
 
 #include "VDGameModeBase.h"
 
+#include "EngineUtils.h"
+#include "VDAttributeComponent.h"
+#include "AI/VDAICharacter.h"
 #include "EnvironmentQuery/EnvQueryManager.h"
 
 AVDGameModeBase::AVDGameModeBase()
@@ -32,6 +35,29 @@ void AVDGameModeBase::OnSpawnBotQueryCompleted(UEnvQueryInstanceBlueprintWrapper
 	EEnvQueryStatus::Type QueryStatus)
 {
 	if(QueryStatus != EEnvQueryStatus::Success)
+	{
+		return;
+	}
+
+	int32 NumOfAliveBots = 0;
+	for(TActorIterator<AVDAICharacter> It(GetWorld()); It; ++It)
+	{
+		AVDAICharacter* Bot = *It;
+		UVDAttributeComponent* AttributeComponent = Cast<UVDAttributeComponent>(Bot->GetComponentByClass(UVDAttributeComponent::StaticClass()));
+		if(AttributeComponent && AttributeComponent->IsAlive())
+		{
+			NumOfAliveBots++;
+		}
+	}
+
+	float MaxBotCount = 10.0f;
+
+	if(DifficultyCurve)
+	{
+		MaxBotCount = DifficultyCurve->GetFloatValue(GetWorld()->TimeSeconds);
+	}
+	
+	if (NumOfAliveBots >= MaxBotCount)
 	{
 		return;
 	}
