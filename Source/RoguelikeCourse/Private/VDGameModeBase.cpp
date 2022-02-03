@@ -23,22 +23,6 @@ void AVDGameModeBase::StartPlay()
 
 void AVDGameModeBase::SpawnBotTimerElapsed()
 {
-	UEnvQueryInstanceBlueprintWrapper* QueryWrapper = UEnvQueryManager::RunEQSQuery(this,
-		SpawnBotQuery, this, EEnvQueryRunMode::RandomBest5Pct, nullptr);
-
-	if(ensure(QueryWrapper))
-	{
-		QueryWrapper->GetOnQueryFinishedEvent().AddDynamic(this, &AVDGameModeBase::OnSpawnBotQueryCompleted);
-	}
-}
-
-void AVDGameModeBase::OnSpawnBotQueryCompleted(UEnvQueryInstanceBlueprintWrapper* QueryInstance,
-	EEnvQueryStatus::Type QueryStatus)
-{
-	if(QueryStatus != EEnvQueryStatus::Success)
-	{
-		return;
-	}
 
 	int32 NumOfAliveBots = 0;
 	for(TActorIterator<AVDAICharacter> It(GetWorld()); It; ++It)
@@ -66,6 +50,23 @@ void AVDGameModeBase::OnSpawnBotQueryCompleted(UEnvQueryInstanceBlueprintWrapper
 		return;
 	}
 	
+	UEnvQueryInstanceBlueprintWrapper* QueryWrapper = UEnvQueryManager::RunEQSQuery(this,
+		SpawnBotQuery, this, EEnvQueryRunMode::RandomBest5Pct, nullptr);
+
+	if(ensure(QueryWrapper))
+	{
+		QueryWrapper->GetOnQueryFinishedEvent().AddDynamic(this, &AVDGameModeBase::OnSpawnBotQueryCompleted);
+	}
+}
+
+void AVDGameModeBase::OnSpawnBotQueryCompleted(UEnvQueryInstanceBlueprintWrapper* QueryInstance,
+	EEnvQueryStatus::Type QueryStatus)
+{
+	if(QueryStatus != EEnvQueryStatus::Success)
+	{
+		return;
+	}
+
 	TArray<FVector> Locations;
 	bool isResult = QueryInstance->GetQueryResultsAsLocations(Locations);
 
