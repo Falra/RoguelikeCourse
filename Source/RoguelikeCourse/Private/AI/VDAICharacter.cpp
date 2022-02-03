@@ -4,6 +4,7 @@
 #include "AI/VDAICharacter.h"
 
 #include "AIController.h"
+#include "BrainComponent.h"
 #include "DrawDebugHelpers.h"
 #include "VDAttributeComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
@@ -23,6 +24,8 @@ void AVDAICharacter::PostInitializeComponents()
 	Super::PostInitializeComponents();
 	
 	PawnSensingComp->OnSeePawn.AddDynamic(this, &AVDAICharacter::OnPawnSeen);
+
+	AttributeComponent->OnHealthChanged.AddDynamic(this, &AVDAICharacter::OnHealthChanged);
 }
 
 void AVDAICharacter::OnPawnSeen(APawn* Pawn)
@@ -35,4 +38,29 @@ void AVDAICharacter::OnPawnSeen(APawn* Pawn)
 		// DrawDebugString(GetWorld(), GetActorLocation(), "PLAYER SPOTTED", nullptr, FColor::White, 4.0f, true);
 	}
 	
+}
+
+void AVDAICharacter::OnHealthChanged(AActor* InstigatorActor, UVDAttributeComponent* OwningComponent, float NewHealth,
+	float DeltaHealth)
+{
+	if(DeltaHealth < 0.0f)
+	{
+
+		if(NewHealth <= 0.0f)
+		{
+			// stop BT
+			AAIController* AIC = Cast<AAIController>(GetController());
+			if(AIC)
+			{
+				AIC->GetBrainComponent()->StopLogic("Killed");
+			}
+			
+			// rag-doll
+			GetMesh()->SetAllBodiesSimulatePhysics(true);
+			GetMesh()->SetCollisionProfileName("Ragdoll");
+			
+			// set lifespan
+			SetLifeSpan(10.0f);
+		}
+	}
 }
