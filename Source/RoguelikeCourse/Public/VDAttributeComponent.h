@@ -30,7 +30,7 @@ public:
 	FOnHealthChanged OnHealthChanged;
 	
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
-	bool ApplyHealthChange(float DeltaHealth);
+	bool ApplyHealthChange(AActor* InstigatorActor, float DeltaHealth);
 	
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
     bool IsAlive() const;

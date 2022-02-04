@@ -53,7 +53,7 @@ void AVDExplosion::OnComponentHit(UPrimitiveComponent* HitComp, AActor* OtherAct
 		UVDAttributeComponent* AttributeComponent = OtherActor->FindComponentByClass<UVDAttributeComponent>();
 		if(AttributeComponent)
 		{
-			AttributeComponent->ApplyHealthChange(-50.0f);
+			AttributeComponent->ApplyHealthChange(this, -50.0f);
 		}
 		// debug string
 		FString CombinedString = FString::Printf(TEXT("Explosion hit %s at %s"), *GetNameSafe(OtherActor), *Hit.ImpactPoint.ToString());

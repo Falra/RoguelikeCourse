@@ -9,14 +9,14 @@ UVDAttributeComponent::UVDAttributeComponent()
 	Health = HealthMax;
 }
 
-bool UVDAttributeComponent::ApplyHealthChange(float DeltaHealth)
+bool UVDAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, float DeltaHealth)
 {
 	float OldHealth = Health;
 
 	Health = FMath::Clamp(Health + DeltaHealth, 0.0f, HealthMax);
 
 	float ActualDelta = Health - OldHealth;
-	OnHealthChanged.Broadcast(nullptr, this, Health, ActualDelta); // @fixme: Still nullptr for InstigatorActor parameter
+	OnHealthChanged.Broadcast(InstigatorActor, this, Health, ActualDelta);
 
 	return ActualDelta != 0;
 }

@@ -30,14 +30,18 @@ void AVDAICharacter::PostInitializeComponents()
 
 void AVDAICharacter::OnPawnSeen(APawn* Pawn)
 {
+	SetTargetActor(Pawn);
+
+	// DrawDebugString(GetWorld(), GetActorLocation(), "PLAYER SPOTTED", nullptr, FColor::White, 4.0f, true);
+}
+
+void AVDAICharacter::SetTargetActor(AActor* NewTarget)
+{
 	AAIController* AIController = Cast<AAIController>(GetController());
 	if(AIController)
 	{
-		UBlackboardComponent* BlackboardComponent = AIController->GetBlackboardComponent();
-		BlackboardComponent->SetValueAsObject("TargetActor", Pawn);
-		// DrawDebugString(GetWorld(), GetActorLocation(), "PLAYER SPOTTED", nullptr, FColor::White, 4.0f, true);
-	}
-	
+		AIController->GetBlackboardComponent()->SetValueAsObject("TargetActor", NewTarget);
+	}	
 }
 
 void AVDAICharacter::OnHealthChanged(AActor* InstigatorActor, UVDAttributeComponent* OwningComponent, float NewHealth,
@@ -46,6 +50,11 @@ void AVDAICharacter::OnHealthChanged(AActor* InstigatorActor, UVDAttributeCompon
 	if(DeltaHealth < 0.0f)
 	{
 
+		if(InstigatorActor != this)
+		{
+			SetTargetActor(InstigatorActor);
+		}
+		
 		if(NewHealth <= 0.0f)
 		{
 			// stop BT
