@@ -30,6 +30,9 @@ protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UVDAttributeComponent* AttributeComponent;
 
+	UPROPERTY(VisibleAnywhere, Category = "Effects")
+	FName TimeToHitParamName;
+
 	UFUNCTION()
 	void OnPawnSeen(APawn* Pawn);
 

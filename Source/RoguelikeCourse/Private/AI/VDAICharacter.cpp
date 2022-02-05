@@ -17,6 +17,8 @@ AVDAICharacter::AVDAICharacter()
 	AttributeComponent = CreateDefaultSubobject<UVDAttributeComponent>("AttributeComponent");
 	
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
+
+	TimeToHitParamName = "TimeToHit";
 }
 
 void AVDAICharacter::PostInitializeComponents()
@@ -54,6 +56,8 @@ void AVDAICharacter::OnHealthChanged(AActor* InstigatorActor, UVDAttributeCompon
 		{
 			SetTargetActor(InstigatorActor);
 		}
+
+		GetMesh()->SetScalarParameterValueOnMaterials(TimeToHitParamName, GetWorld()->TimeSeconds);
 		
 		if(NewHealth <= 0.0f)
 		{
