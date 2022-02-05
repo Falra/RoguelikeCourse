@@ -19,5 +19,11 @@ class ROGUELIKECOURSE_API UVDBTTask_RangedAttack : public UBTTaskNode
 protected:
 	
 	UPROPERTY(EditAnywhere, Category = "AI")
-	TSubclassOf<AActor> ProjectileClass;	
+	TSubclassOf<AActor> ProjectileClass;
+
+	UPROPERTY(EditAnywhere, Category = "AI")
+	float MaxBulletSpread;
+
+public:
+	UVDBTTask_RangedAttack();
 };

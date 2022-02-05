@@ -4,8 +4,14 @@
 #include "AI/VDBTTask_RangedAttack.h"
 
 #include "AIController.h"
+#include "VDAttributeComponent.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "GameFramework/Character.h"
+
+UVDBTTask_RangedAttack::UVDBTTask_RangedAttack()
+{
+	MaxBulletSpread = 2.0f;
+}
 
 EBTNodeResult::Type UVDBTTask_RangedAttack::ExecuteTask(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory)
 {
@@ -26,8 +32,17 @@ EBTNodeResult::Type UVDBTTask_RangedAttack::ExecuteTask(UBehaviorTreeComponent& 
 			return EBTNodeResult::Failed;
 		}
 
+		bool bIsTargetAlive = UVDAttributeComponent::IsActorAlive(PlayerActor);
+		if(!bIsTargetAlive)
+		{
+			return EBTNodeResult::Failed;	
+		}
+		
 		FVector Direction = PlayerActor->GetActorLocation() - MuzzleLocation;
 		FRotator MuzzleRotation = Direction.Rotation();
+
+		MuzzleRotation.Pitch += FMath::RandRange(0.0f, MaxBulletSpread);
+		MuzzleRotation.Yaw += FMath::RandRange(-MaxBulletSpread, MaxBulletSpread);
 
 		FActorSpawnParameters SpawnParams;
 		SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
