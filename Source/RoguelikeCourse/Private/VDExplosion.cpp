@@ -50,7 +50,8 @@ void AVDExplosion::OnComponentHit(UPrimitiveComponent* HitComp, AActor* OtherAct
 		RadialForceComponent->FireImpulse();
 		// deal damage
 		// UVDAttributeComponent* AttributeComponent = Cast<UVDAttributeComponent>(OtherActor->GetComponentByClass(UVDAttributeComponent::StaticClass()));
-		UVDAttributeComponent* AttributeComponent = OtherActor->FindComponentByClass<UVDAttributeComponent>();
+		// UVDAttributeComponent* AttributeComponent = OtherActor->FindComponentByClass<UVDAttributeComponent>();
+		UVDAttributeComponent* AttributeComponent = UVDAttributeComponent::GetAttributes(OtherActor);
 		if(AttributeComponent)
 		{
 			AttributeComponent->ApplyHealthChange(this, -50.0f);

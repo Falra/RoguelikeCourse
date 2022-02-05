@@ -20,7 +20,7 @@ void AVDPowerup_HealthPotion::Interact_Implementation(APawn* InstigatorPawn)
 		return;
 	}
 
-	UVDAttributeComponent* AttributeComp = Cast<UVDAttributeComponent>(InstigatorPawn->GetComponentByClass(UVDAttributeComponent::StaticClass()));
+	UVDAttributeComponent* AttributeComp = UVDAttributeComponent::GetAttributes(InstigatorPawn);
 	// Check if not already at max health
 	if (ensure(AttributeComp) && !AttributeComp->IsFullHealth())
 	{

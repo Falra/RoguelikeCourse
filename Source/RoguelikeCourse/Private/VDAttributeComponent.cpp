@@ -36,3 +36,12 @@ float UVDAttributeComponent::GetHealthMax() const
 	return HealthMax;
 }
 
+UVDAttributeComponent* UVDAttributeComponent::GetAttributes(AActor* FromActor)
+{
+	if(FromActor)
+	{
+		return Cast<UVDAttributeComponent>(FromActor->GetComponentByClass(StaticClass()));
+	}
+
+	return nullptr;
+}

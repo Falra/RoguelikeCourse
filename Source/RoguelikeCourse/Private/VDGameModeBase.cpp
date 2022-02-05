@@ -28,7 +28,7 @@ void AVDGameModeBase::SpawnBotTimerElapsed()
 	for(TActorIterator<AVDAICharacter> It(GetWorld()); It; ++It)
 	{
 		AVDAICharacter* Bot = *It;
-		UVDAttributeComponent* AttributeComponent = Cast<UVDAttributeComponent>(Bot->GetComponentByClass(UVDAttributeComponent::StaticClass()));
+		UVDAttributeComponent* AttributeComponent = UVDAttributeComponent::GetAttributes(Bot);
 		if(ensure(AttributeComponent) && AttributeComponent->IsAlive())
 		{
 			NumOfAliveBots++;

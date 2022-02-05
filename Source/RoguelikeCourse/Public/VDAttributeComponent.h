@@ -16,6 +16,10 @@ class ROGUELIKECOURSE_API UVDAttributeComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:	
+
+	UFUNCTION(BlueprintCallable, Category = "Attributes")
+	static UVDAttributeComponent* GetAttributes(AActor* FromActor); 
+	
 	UVDAttributeComponent();
 
 protected:

@@ -19,7 +19,7 @@ void AVDMagicProjectile::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent
 {
 	if(OtherActor && OtherActor != GetInstigator())
 	{
-		UVDAttributeComponent* AttributeComponent = Cast<UVDAttributeComponent>(OtherActor->GetComponentByClass(UVDAttributeComponent::StaticClass()));
+		UVDAttributeComponent* AttributeComponent = UVDAttributeComponent::GetAttributes(OtherActor);
 		if(AttributeComponent)
 		{
 			AttributeComponent->ApplyHealthChange(GetInstigator(), -DamageAmount);
