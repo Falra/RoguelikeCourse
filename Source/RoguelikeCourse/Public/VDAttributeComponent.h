@@ -18,7 +18,10 @@ class ROGUELIKECOURSE_API UVDAttributeComponent : public UActorComponent
 public:	
 
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
-	static UVDAttributeComponent* GetAttributes(AActor* FromActor); 
+	static UVDAttributeComponent* GetAttributes(AActor* FromActor);
+
+	UFUNCTION(BlueprintCallable, Category = "Attributes", meta = (DisplayName = "IsAlive"))
+	static bool IsActorAlive(AActor* Actor);
 	
 	UVDAttributeComponent();
 

@@ -45,3 +45,13 @@ UVDAttributeComponent* UVDAttributeComponent::GetAttributes(AActor* FromActor)
 
 	return nullptr;
 }
+
+bool UVDAttributeComponent::IsActorAlive(AActor* Actor)
+{
+	UVDAttributeComponent* AttributeComponent = GetAttributes(Actor);
+	if(AttributeComponent)
+	{
+		return AttributeComponent->IsAlive();
+	}
+	return false;
+}
