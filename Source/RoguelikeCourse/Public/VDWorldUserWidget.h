@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "VDWorldUserWidget.generated.h"
 
+class USizeBox;
 /**
  * 
  */
@@ -13,5 +14,14 @@ UCLASS()
 class ROGUELIKECOURSE_API UVDWorldUserWidget : public UUserWidget
 {
 	GENERATED_BODY()
+
+protected:
+
+	UPROPERTY(meta=(BindWidget))
+	USizeBox* ParentSizeBox;
 	
+	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
+
+	UPROPERTY(BlueprintReadOnly, Category = "UI");
+	AActor* AttachedActor;
 };
