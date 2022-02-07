@@ -7,7 +7,9 @@
 #include "BrainComponent.h"
 #include "DrawDebugHelpers.h"
 #include "VDAttributeComponent.h"
+#include "VDWorldUserWidget.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "Blueprint/UserWidget.h"
 #include "Perception/PawnSensingComponent.h"
 
 AVDAICharacter::AVDAICharacter()
@@ -58,6 +60,16 @@ void AVDAICharacter::OnHealthChanged(AActor* InstigatorActor, UVDAttributeCompon
 		}
 
 		GetMesh()->SetScalarParameterValueOnMaterials(TimeToHitParamName, GetWorld()->TimeSeconds);
+
+		if(ActiveHealthBar == nullptr)
+		{
+			ActiveHealthBar = CreateWidget<UVDWorldUserWidget>(GetWorld(), HealthBarWidgetClass);
+			if(ActiveHealthBar)
+			{
+				ActiveHealthBar->AttachedActor = this;
+				ActiveHealthBar->AddToViewport();
+			}
+		}
 		
 		if(NewHealth <= 0.0f)
 		{

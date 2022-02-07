@@ -11,6 +11,13 @@ void UVDWorldUserWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTi
 {
 	Super::NativeTick(MyGeometry, InDeltaTime);
 
+	if(!IsValid(AttachedActor))
+	{
+		RemoveFromParent();
+		UE_LOG(LogTemp, Warning, TEXT("AttachedActor no longer valid. Removing health widget"));
+		return;
+	}
+	
 	FVector2D ScreenPosition;
 	bool const bIsFound = UGameplayStatics::ProjectWorldToScreen(GetOwningPlayer(), AttachedActor->GetActorLocation(), ScreenPosition);
 	if(bIsFound)

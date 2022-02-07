@@ -8,6 +8,7 @@
 
 class UVDAttributeComponent;
 class  UPawnSensingComponent;
+class UVDWorldUserWidget;
 
 UCLASS()
 class ROGUELIKECOURSE_API AVDAICharacter : public ACharacter
@@ -32,6 +33,12 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "Effects")
 	FName TimeToHitParamName;
+
+	UPROPERTY(EditDefaultsOnly, Category = "UI")
+	TSubclassOf<UUserWidget> HealthBarWidgetClass;
+
+	UPROPERTY(VisibleAnywhere, Category = "UI")
+	UVDWorldUserWidget* ActiveHealthBar;
 
 	UFUNCTION()
 	void OnPawnSeen(APawn* Pawn);
