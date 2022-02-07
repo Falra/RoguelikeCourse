@@ -19,7 +19,7 @@ void UVDWorldUserWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTi
 	}
 	
 	FVector2D ScreenPosition;
-	bool const bIsFound = UGameplayStatics::ProjectWorldToScreen(GetOwningPlayer(), AttachedActor->GetActorLocation(), ScreenPosition);
+	bool const bIsFound = UGameplayStatics::ProjectWorldToScreen(GetOwningPlayer(), AttachedActor->GetActorLocation() + WorldOffset, ScreenPosition);
 	if(bIsFound)
 	{
 		const float ViewportScale = UWidgetLayoutLibrary::GetViewportScale(this);
