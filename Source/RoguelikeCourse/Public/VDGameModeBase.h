@@ -45,4 +45,7 @@ public:
 	AVDGameModeBase();
 	
 	virtual void StartPlay() override;
+
+	UFUNCTION(Exec)
+	void KillAll();
 };

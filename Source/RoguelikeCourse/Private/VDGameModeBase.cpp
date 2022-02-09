@@ -21,6 +21,19 @@ void AVDGameModeBase::StartPlay()
 	GetWorldTimerManager().SetTimer(TimerHandle_SpawnBots, this, &AVDGameModeBase::SpawnBotTimerElapsed, SpawnTimerInterval, true);
 }
 
+void AVDGameModeBase::KillAll()
+{
+	for(TActorIterator<AVDAICharacter> It(GetWorld()); It; ++It)
+	{
+		AVDAICharacter* Bot = *It;
+		UVDAttributeComponent* AttributeComponent = UVDAttributeComponent::GetAttributes(Bot);
+		if(ensure(AttributeComponent) && AttributeComponent->IsAlive())
+		{
+			AttributeComponent->Kill(this); // @fixme: pass in player? for credits	
+		}
+	}	
+}
+
 void AVDGameModeBase::SpawnBotTimerElapsed()
 {
 
