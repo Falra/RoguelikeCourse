@@ -61,6 +61,11 @@ void AVDCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAction("PrimaryInteract", IE_Pressed, this, &AVDCharacter::PrimaryInteract);
 }
 
+void AVDCharacter::HealSelf(float Amount)
+{
+	AttributeComponent->ApplyHealthChange(this, Amount /* = 100 */);
+}
+
 void AVDCharacter::MoveForward(float Value)
 {
 	FRotator ControlRotation = GetControlRotation();
