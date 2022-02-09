@@ -11,6 +11,11 @@ UVDAttributeComponent::UVDAttributeComponent()
 
 bool UVDAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, float DeltaHealth)
 {
+	if(!GetOwner()->CanBeDamaged())
+	{
+		return false;
+	}
+	
 	float OldHealth = Health;
 
 	Health = FMath::Clamp(Health + DeltaHealth, 0.0f, HealthMax);
