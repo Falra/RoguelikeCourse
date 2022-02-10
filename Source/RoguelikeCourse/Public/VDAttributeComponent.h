@@ -51,4 +51,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Attributes")
 	float GetHealthMax() const;
 
+	UFUNCTION(BlueprintCallable, Category = "Attributes")
+	float GetHealth() const;
+
 };

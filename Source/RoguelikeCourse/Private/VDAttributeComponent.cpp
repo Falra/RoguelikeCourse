@@ -41,6 +41,11 @@ float UVDAttributeComponent::GetHealthMax() const
 	return HealthMax;
 }
 
+float UVDAttributeComponent::GetHealth() const
+{
+	return Health;
+}
+
 bool UVDAttributeComponent::Kill(AActor* InstigatorActor)
 {
 	return ApplyHealthChange(InstigatorActor, -GetHealthMax());
