@@ -6,6 +6,11 @@
 #include "AIController.h"
 #include "BehaviorTree/BlackboardComponent.h"
 
+UVDBTService_CheckAttackRange::UVDBTService_CheckAttackRange()
+{
+	MaxAttackRange = 2000.f;
+}
+
 void UVDBTService_CheckAttackRange::TickNode(UBehaviorTreeComponent& OwnerComp, uint8* NodeMemory, float DeltaSeconds)
 {
 	Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
@@ -17,22 +22,24 @@ void UVDBTService_CheckAttackRange::TickNode(UBehaviorTreeComponent& OwnerComp, 
 		AActor* PlayerActor = Cast<AActor>(BlackboardComponent->GetValueAsObject("TargetActor"));
 		if(PlayerActor)
 		{
-			AAIController* AIController = OwnerComp.GetAIOwner();
-			if(ensure(AIController))
+			AAIController* MyController = OwnerComp.GetAIOwner();
+
+			APawn* AIPawn = MyController->GetPawn();
+			if (ensure(AIPawn))
 			{
-				APawn* AIPawn = AIController->GetPawn();
-				if(ensure(AIPawn))
+				float DistanceTo = FVector::Distance(PlayerActor->GetActorLocation(), AIPawn->GetActorLocation());
+
+				bool bWithinRange = DistanceTo < MaxAttackRange;
+
+				bool bHasLOS = false;
+				if (bWithinRange)
 				{
-					float DistanceToPlayer = FVector::Distance(PlayerActor->GetActorLocation(), AIPawn->GetActorLocation());
-					bool bWithinAttackRange = DistanceToPlayer < 2000.0f;
-					bool bHasLOS = false;
-					if(bWithinAttackRange)
-					{
-						bHasLOS = AIController->LineOfSightTo(PlayerActor);
-					}
-					BlackboardComponent->SetValueAsBool(AttackRangeKey.SelectedKeyName, (bWithinAttackRange && bHasLOS));
+					bHasLOS = MyController->LineOfSightTo(PlayerActor);
 				}
+
+				BlackboardComponent->SetValueAsBool(AttackRangeKey.SelectedKeyName, (bWithinRange && bHasLOS));
 			}
 		}
 	}
 }
+
