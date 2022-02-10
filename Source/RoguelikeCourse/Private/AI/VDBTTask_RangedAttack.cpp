@@ -25,7 +25,6 @@ EBTNodeResult::Type UVDBTTask_RangedAttack::ExecuteTask(UBehaviorTreeComponent& 
 			return EBTNodeResult::Failed;
 		}
 
-		FVector MuzzleLocation = AIPawn->GetMesh()->GetSocketLocation("Muzzle_01");
 		AActor* PlayerActor = Cast<AActor>(BlackboardComp->GetValueAsObject("TargetActor"));
 		if(PlayerActor == nullptr)
 		{
@@ -37,7 +36,9 @@ EBTNodeResult::Type UVDBTTask_RangedAttack::ExecuteTask(UBehaviorTreeComponent& 
 		{
 			return EBTNodeResult::Failed;	
 		}
-		
+
+		// Ignore negative pitch to not hit the floor in front itself
+		FVector MuzzleLocation = AIPawn->GetMesh()->GetSocketLocation("Muzzle_01");
 		FVector Direction = PlayerActor->GetActorLocation() - MuzzleLocation;
 		FRotator MuzzleRotation = Direction.Rotation();
 
