@@ -73,7 +73,7 @@ void AVDGameModeBase::SpawnBotTimerElapsed()
 }
 
 void AVDGameModeBase::OnSpawnBotQueryCompleted(UEnvQueryInstanceBlueprintWrapper* QueryInstance,
-	EEnvQueryStatus::Type QueryStatus)
+                                               EEnvQueryStatus::Type QueryStatus)
 {
 	if(QueryStatus != EEnvQueryStatus::Success)
 	{
@@ -89,4 +89,9 @@ void AVDGameModeBase::OnSpawnBotQueryCompleted(UEnvQueryInstanceBlueprintWrapper
 
 		DrawDebugSphere(GetWorld(), Locations[0], 50.0f, 20, FColor::Blue, false, 60.0f);
 	}
+}
+
+void AVDGameModeBase::OnActorKilled(AActor* VictimActor, AActor* Killer)
+{
+	
 }

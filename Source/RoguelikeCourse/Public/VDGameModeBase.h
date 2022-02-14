@@ -42,6 +42,8 @@ protected:
 	
 public:
 
+	virtual void OnActorKilled(AActor* VictimActor, AActor* Killer);
+	
 	AVDGameModeBase();
 	
 	virtual void StartPlay() override;

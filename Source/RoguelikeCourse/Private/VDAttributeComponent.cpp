@@ -3,6 +3,8 @@
 
 #include "VDAttributeComponent.h"
 
+#include "VDGameModeBase.h"
+
 UVDAttributeComponent::UVDAttributeComponent()
 {
 	HealthMax = 100;
@@ -23,6 +25,16 @@ bool UVDAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, float Del
 	float ActualDelta = Health - OldHealth;
 	OnHealthChanged.Broadcast(InstigatorActor, this, Health, ActualDelta);
 
+	// Died
+	if(ActualDelta <= 0.0f && Health == 0.0f)
+	{
+		AVDGameModeBase* GM = GetWorld()->GetAuthGameMode<AVDGameModeBase>();
+		if(GM)
+		{
+			GM->OnActorKilled(GetOwner(), InstigatorActor);
+		}
+	}
+	
 	return ActualDelta != 0;
 }
 
