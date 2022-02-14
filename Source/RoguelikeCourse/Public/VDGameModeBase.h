@@ -39,6 +39,9 @@ protected:
 
 	UFUNCTION()
 	void SpawnBotTimerElapsed();
+
+	UFUNCTION()
+	void RespawnPlayerElapsed(AController* Controller);
 	
 public:
 

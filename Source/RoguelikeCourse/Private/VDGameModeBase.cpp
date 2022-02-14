@@ -6,6 +6,7 @@
 #include "DrawDebugHelpers.h"
 #include "EngineUtils.h"
 #include "VDAttributeComponent.h"
+#include "VDCharacter.h"
 #include "AI/VDAICharacter.h"
 #include "EnvironmentQuery/EnvQueryManager.h"
 
@@ -93,5 +94,26 @@ void AVDGameModeBase::OnSpawnBotQueryCompleted(UEnvQueryInstanceBlueprintWrapper
 
 void AVDGameModeBase::OnActorKilled(AActor* VictimActor, AActor* Killer)
 {
-	
+	AVDCharacter* Player = Cast<AVDCharacter>(VictimActor);
+	if(Player)
+	{
+		FTimerHandle TimerHandle_RespawnDelay;
+		FTimerDelegate Delegate;
+
+		Delegate.BindUFunction(this, "RespawnPlayerElapsed", Player->GetController());
+		float RespawnDelay = 2.0f;
+
+		GetWorldTimerManager().SetTimer(TimerHandle_RespawnDelay, Delegate, RespawnDelay, false); 
+	}
+
+	UE_LOG(LogTemp, Log, TEXT("OnActorKilled: Victim: %s, Killer: %s"), *GetNameSafe(VictimActor), *GetNameSafe(Killer));
+}
+
+void AVDGameModeBase::RespawnPlayerElapsed(AController* Controller)
+{
+	if(ensure(Controller))
+	{
+		Controller->UnPossess();
+		RestartPlayer(Controller);
+	}
 }
