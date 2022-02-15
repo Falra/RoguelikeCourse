@@ -10,6 +10,7 @@
 #include "VDWorldUserWidget.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Blueprint/UserWidget.h"
+#include "Components/CapsuleComponent.h"
 #include "Perception/PawnSensingComponent.h"
 
 AVDAICharacter::AVDAICharacter()
@@ -20,6 +21,9 @@ AVDAICharacter::AVDAICharacter()
 	
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
+	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Ignore);
+	GetMesh()->SetGenerateOverlapEvents(true);
+	
 	TimeToHitParamName = "TimeToHit";
 }
 

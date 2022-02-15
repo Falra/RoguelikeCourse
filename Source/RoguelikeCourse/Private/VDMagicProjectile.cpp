@@ -3,6 +3,7 @@
 
 #include "VDMagicProjectile.h"
 #include "VDAttributeComponent.h"
+#include "VDGameplayFunctionLibrary.h"
 #include "Particles/ParticleSystemComponent.h"
 
 // Sets default values
@@ -19,10 +20,16 @@ void AVDMagicProjectile::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent
 {
 	if(OtherActor && OtherActor != GetInstigator())
 	{
+		/*
 		UVDAttributeComponent* AttributeComponent = UVDAttributeComponent::GetAttributes(OtherActor);
 		if(AttributeComponent)
 		{
 			AttributeComponent->ApplyHealthChange(GetInstigator(), -DamageAmount);
+			Explode();
+		}
+		*/
+		if (UVDGameplayFunctionLibrary::ApplyDirectionalDamage(GetInstigator(), OtherActor, DamageAmount, SweepResult))
+		{
 			Explode();
 		}
 	}
