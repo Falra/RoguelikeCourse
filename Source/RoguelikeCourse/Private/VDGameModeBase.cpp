@@ -10,6 +10,8 @@
 #include "AI/VDAICharacter.h"
 #include "EnvironmentQuery/EnvQueryManager.h"
 
+static TAutoConsoleVariable<bool> CVarSpawnBots(TEXT("vd.SpawnBots"), true, TEXT("Enabling spawning of bots via timer"), ECVF_Cheat);
+
 AVDGameModeBase::AVDGameModeBase()
 {
 	SpawnTimerInterval = 2.0f;
@@ -37,7 +39,12 @@ void AVDGameModeBase::KillAll()
 
 void AVDGameModeBase::SpawnBotTimerElapsed()
 {
-
+	if(!CVarSpawnBots.GetValueOnGameThread())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Spawn bots disabled via cvar 'CVarSpawnBots'"));
+		return;
+	}
+	
 	int32 NumOfAliveBots = 0;
 	for(TActorIterator<AVDAICharacter> It(GetWorld()); It; ++It)
 	{
