@@ -5,6 +5,9 @@
 
 #include "VDGameModeBase.h"
 
+static TAutoConsoleVariable<float> CVarDamageMultiplier(TEXT("vd.DamageMultiplier"), 1.0f,
+	TEXT("Global damage multipier for attribute component"), ECVF_Cheat);
+
 UVDAttributeComponent::UVDAttributeComponent()
 {
 	HealthMax = 100;
@@ -16,6 +19,12 @@ bool UVDAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, float Del
 	if(!GetOwner()->CanBeDamaged())
 	{
 		return false;
+	}
+
+	if(DeltaHealth < 0.0f)
+	{
+		float DamageMultiplier = CVarDamageMultiplier.GetValueOnGameThread();
+		DeltaHealth *= DamageMultiplier;
 	}
 	
 	float OldHealth = Health;

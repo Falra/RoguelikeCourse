@@ -10,7 +10,8 @@
 #include "AI/VDAICharacter.h"
 #include "EnvironmentQuery/EnvQueryManager.h"
 
-static TAutoConsoleVariable<bool> CVarSpawnBots(TEXT("vd.SpawnBots"), true, TEXT("Enabling spawning of bots via timer"), ECVF_Cheat);
+static TAutoConsoleVariable<bool> CVarSpawnBots(TEXT("vd.SpawnBots"), true,
+	TEXT("Enabling spawning of bots via timer"), ECVF_Cheat);
 
 AVDGameModeBase::AVDGameModeBase()
 {
