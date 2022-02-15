@@ -11,6 +11,7 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Blueprint/UserWidget.h"
 #include "Components/CapsuleComponent.h"
+#include "GameFramework/CharacterMovementComponent.h"
 #include "Perception/PawnSensingComponent.h"
 
 AVDAICharacter::AVDAICharacter()
@@ -87,6 +88,9 @@ void AVDAICharacter::OnHealthChanged(AActor* InstigatorActor, UVDAttributeCompon
 			// rag-doll
 			GetMesh()->SetAllBodiesSimulatePhysics(true);
 			GetMesh()->SetCollisionProfileName("Ragdoll");
+
+			GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			GetCharacterMovement()->DisableMovement();
 			
 			// set lifespan
 			SetLifeSpan(10.0f);
