@@ -16,7 +16,7 @@ UVDAttributeComponent::UVDAttributeComponent()
 
 bool UVDAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, float DeltaHealth)
 {
-	if(!GetOwner()->CanBeDamaged())
+	if(!GetOwner()->CanBeDamaged() && DeltaHealth < 0.0f)
 	{
 		return false;
 	}
