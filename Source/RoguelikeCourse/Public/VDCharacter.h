@@ -87,7 +87,9 @@ protected:
 
 	virtual void PostInitializeComponents() override;
 
-public:	
+	virtual FVector GetPawnViewLocation() const override;
+	
+public:
 
 	// Sets default values for this character's properties
 	AVDCharacter();

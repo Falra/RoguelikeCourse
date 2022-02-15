@@ -39,6 +39,7 @@ void AVDCharacter::PostInitializeComponents()
 }
 
 // Called to bind functionality to input
+
 void AVDCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 {
 	Super::SetupPlayerInputComponent(PlayerInputComponent);
@@ -189,7 +190,7 @@ void AVDCharacter::PrimaryInteract()
 }
 
 void AVDCharacter::OnHealthChanged(AActor* InstigatorActor, UVDAttributeComponent* OwningComponent, float NewHealth,
-	float DeltaHealth)
+                                   float DeltaHealth)
 {
 	if (DeltaHealth < 0.0f)
 	{
@@ -201,4 +202,9 @@ void AVDCharacter::OnHealthChanged(AActor* InstigatorActor, UVDAttributeComponen
 		APlayerController* PC = Cast<APlayerController>(GetController());
 		DisableInput(PC);
 	}
+}
+
+FVector AVDCharacter::GetPawnViewLocation() const
+{
+	return CameraComponent->GetComponentLocation();
 }
