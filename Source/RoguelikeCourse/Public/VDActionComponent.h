@@ -14,7 +14,16 @@ class ROGUELIKECOURSE_API UVDActionComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:	
-	// Sets default values for this component's properties
+
+	UFUNCTION(BlueprintCallable, Category = "Actions")
+	void AddAction(TSubclassOf<UVDAction> ActionClass);
+
+	UFUNCTION(BlueprintCallable, Category = "Actions")
+	bool StartActionByName(AActor* Instigator, FName ActionName);
+
+	UFUNCTION(BlueprintCallable, Category = "Actions")
+	bool StopActionByName(AActor* Instigator, FName ActionName);
+	
 	UVDActionComponent();
 
 protected:
@@ -22,12 +31,8 @@ protected:
 	UPROPERTY()
 	TArray<UVDAction*> Actions;
 	
-	// Called when the game starts
 	virtual void BeginPlay() override;
 
 public:	
-	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
-
-		
 };

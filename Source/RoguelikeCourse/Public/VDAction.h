@@ -16,12 +16,12 @@ class ROGUELIKECOURSE_API UVDAction : public UObject
 public:
 
 	/* Action nickname to start/stop w/o a reference to thee object */
-	UPROPERTY(EditDefaultsOnly, Category = "Action")
+	UPROPERTY(EditDefaultsOnly, Category = "Actions")
 	FName ActionName;
 
-	UFUNCTION(BlueprintNativeEvent, Category = "Action")
+	UFUNCTION(BlueprintNativeEvent, Category = "Actions")
 	void StartAction(AActor* Instigator);
 
-	UFUNCTION(BlueprintNativeEvent, Category = "Action")
+	UFUNCTION(BlueprintNativeEvent, Category = "Actions")
 	void StopAction(AActor* Instigator);
 };

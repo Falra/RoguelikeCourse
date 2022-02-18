@@ -3,14 +3,11 @@
 
 #include "VDActionComponent.h"
 
-// Sets default values for this component's properties
+#include "VDAction.h"
+
 UVDActionComponent::UVDActionComponent()
 {
-	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
-	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-
-	// ...
 }
 
 
@@ -18,17 +15,34 @@ UVDActionComponent::UVDActionComponent()
 void UVDActionComponent::BeginPlay()
 {
 	Super::BeginPlay();
-
-	// ...
-	
 }
 
 
-// Called every frame
 void UVDActionComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
-
-	// ...
 }
 
+void UVDActionComponent::AddAction(TSubclassOf<UVDAction> ActionClass)
+{
+	if(!ensure(ActionClass))
+	{
+		return;
+	}
+
+	UVDAction* NewAction = NewObject<UVDAction>(this, ActionClass);
+	if(ensure(NewAction))
+	{
+		Actions.Add(NewAction);
+	}
+}
+
+bool UVDActionComponent::StartActionByName(AActor* Instigator, FName ActionName)
+{
+	
+}
+
+bool UVDActionComponent::StopActionByName(AActor* Instigator, FName ActionName)
+{
+	
+}
