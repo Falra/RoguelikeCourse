@@ -39,10 +39,10 @@ void UVDActionComponent::AddAction(TSubclassOf<UVDAction> ActionClass)
 
 bool UVDActionComponent::StartActionByName(AActor* Instigator, FName ActionName)
 {
-	
+	return true;	
 }
 
 bool UVDActionComponent::StopActionByName(AActor* Instigator, FName ActionName)
 {
-	
+	return true;
 }
