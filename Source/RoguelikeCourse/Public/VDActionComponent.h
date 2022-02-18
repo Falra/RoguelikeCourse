@@ -6,6 +6,7 @@
 #include "Components/ActorComponent.h"
 #include "VDActionComponent.generated.h"
 
+class UVDAction;
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class ROGUELIKECOURSE_API UVDActionComponent : public UActorComponent
@@ -17,6 +18,10 @@ public:
 	UVDActionComponent();
 
 protected:
+
+	UPROPERTY()
+	TArray<UVDAction*> Actions;
+	
 	// Called when the game starts
 	virtual void BeginPlay() override;
 
