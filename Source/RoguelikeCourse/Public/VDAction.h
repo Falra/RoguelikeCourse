@@ -9,7 +9,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(Blueprintable)
 class ROGUELIKECOURSE_API UVDAction : public UObject
 {
 	GENERATED_BODY()
