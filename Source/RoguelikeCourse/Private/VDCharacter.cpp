@@ -3,6 +3,7 @@
 
 #include "VDCharacter.h"
 #include "DrawDebugHelpers.h"
+#include "VDActionComponent.h"
 #include "VDInteractionComponent.h"
 #include "VDAttributeComponent.h"
 #include "Camera/CameraComponent.h"
@@ -23,6 +24,8 @@ AVDCharacter::AVDCharacter()
 	InteractionComponent = CreateDefaultSubobject<UVDInteractionComponent>("InteractionComponent");
 	
 	AttributeComponent = CreateDefaultSubobject<UVDAttributeComponent>("AttributeComponent");
+
+	ActionComponent = CreateDefaultSubobject<UVDActionComponent>("ActionComponent");
 	
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	bUseControllerRotationYaw = false;

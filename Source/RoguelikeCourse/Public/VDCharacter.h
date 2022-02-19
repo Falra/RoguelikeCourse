@@ -10,6 +10,7 @@ class USpringArmComponent;
 class UCameraComponent;
 class UVDInteractionComponent;
 class UVDAttributeComponent;
+class UVDActionComponent;
 
 UCLASS()
 class ROGUELIKECOURSE_API AVDCharacter : public ACharacter
@@ -58,6 +59,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
 	UVDAttributeComponent* AttributeComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components")
+	UVDActionComponent* ActionComponent;
 	
 	void PrimaryAttack();
 
