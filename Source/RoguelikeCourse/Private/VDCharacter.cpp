@@ -63,6 +63,10 @@ void AVDCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCompone
 	PlayerInputComponent->BindAction("Jump", IE_Pressed, this, &ACharacter::Jump);
 
 	PlayerInputComponent->BindAction("PrimaryInteract", IE_Pressed, this, &AVDCharacter::PrimaryInteract);
+
+	PlayerInputComponent->BindAction("Sprint", IE_Pressed, this, &AVDCharacter::SprintStart);
+	PlayerInputComponent->BindAction("Sprint", IE_Released, this, &AVDCharacter::SprintStop);
+
 }
 
 void AVDCharacter::HealSelf(float Amount)
@@ -90,6 +94,16 @@ void AVDCharacter::MoveRight(float Value)
 	FVector RightVector = FRotationMatrix(ControlRotation).GetScaledAxis(EAxis::Y);
 
 	AddMovementInput(RightVector, Value);
+}
+
+void AVDCharacter::SprintStart()
+{
+	ActionComponent->StartActionByName(this, "Sprint");
+}
+
+void AVDCharacter::SprintStop()
+{
+	ActionComponent->StopActionByName(this, "Sprint");
 }
 
 void AVDCharacter::PrimaryAttack()

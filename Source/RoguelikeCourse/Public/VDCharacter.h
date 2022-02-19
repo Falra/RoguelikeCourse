@@ -86,6 +86,10 @@ protected:
 
 	void MoveRight(float Value);
 
+	void SprintStart();
+
+	void SprintStop();
+
 	UFUNCTION()
 	void OnHealthChanged(AActor* InstigatorActor, UVDAttributeComponent* OwningComponent, float NewHealth, float DeltaHealth);
 
