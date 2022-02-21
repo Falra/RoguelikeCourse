@@ -15,6 +15,11 @@ UVDActionComponent::UVDActionComponent()
 void UVDActionComponent::BeginPlay()
 {
 	Super::BeginPlay();
+
+	for(TSubclassOf<UVDAction> ActionClass : DefaultActions)
+	{
+		AddAction(ActionClass);
+	}
 }
 
 

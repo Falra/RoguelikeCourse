@@ -30,6 +30,10 @@ protected:
 
 	UPROPERTY()
 	TArray<UVDAction*> Actions;
+
+	// Granted abilities at game start
+	UPROPERTY(EditAnywhere, Category = "Actions")
+	TArray<TSubclassOf<UVDAction>> DefaultActions;
 	
 	virtual void BeginPlay() override;
 
