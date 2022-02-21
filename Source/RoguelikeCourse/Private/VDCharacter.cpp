@@ -107,12 +107,8 @@ void AVDCharacter::SprintStop()
 }
 
 void AVDCharacter::PrimaryAttack()
-{
-	StartAttackEffects();
-
-	GetWorldTimerManager().SetTimer(TimerHandle_PrimaryAttack, this, &AVDCharacter::PrimaryAttack_TimeElapsed, TimerAttack_InRate);
-	//GetWorldTimerManager().ClearTimer(TimerHandle_PrimaryAttack);
-
+{	
+	ActionComponent->StartActionByName(this, "PrimaryAttack");
 }
 
 void AVDCharacter::PrimaryAttack_TimeElapsed()
