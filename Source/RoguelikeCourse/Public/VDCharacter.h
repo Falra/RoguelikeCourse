@@ -22,32 +22,6 @@ protected:
 	UPROPERTY(VisibleAnywhere, Category = "Effects")
 	FName TimeToHitParamName;
 
-	UPROPERTY(VisibleAnywhere, Category = "Effects")
-	FName HandSocketName;
-	
-	UPROPERTY(EditAnywhere, Category = "Attack")
-	TSubclassOf<AActor> ProjectileClass;
-	
-	UPROPERTY(EditAnywhere, Category = "Attack")
-	TSubclassOf<AActor> BlackHoleProjectileClass;
-
-	UPROPERTY(EditAnywhere, Category = "Attack")
-	TSubclassOf<AActor> DashProjectileClass;
-	
-	UPROPERTY(EditAnywhere, Category = "Attack")
-	UAnimMontage* AttackAnimation;
-
-	UPROPERTY(EditAnywhere, Category = "Attack")
-	float TimerAttack_InRate = 0.2f;
-
-	/* Particle System played during attack animation */
-	UPROPERTY(EditAnywhere, Category = "Attack")
-	UParticleSystem* CastingEffect;
-	
-	FTimerHandle TimerHandle_PrimaryAttack;
-	FTimerHandle TimerHandle_BlackholeAttack;
-	FTimerHandle TimerHandle_Dash;
-
 	UPROPERTY(VisibleAnywhere)
 	UCameraComponent* CameraComponent;
 
@@ -65,21 +39,10 @@ protected:
 	
 	void PrimaryAttack();
 
-	void PrimaryAttack_TimeElapsed();
-
 	void BlackHoleAttack();
-
-	void BlackholeAttack_TimeElapsed();
-
+	
 	void Dash();
 
-	void StartAttackEffects();
-	
-	void Dash_TimeElapsed();
-
-	// Re-use spawn logic between attacks
-	void SpawnProjectile(TSubclassOf<AActor> ClassToSpawn);
-	
 	void PrimaryInteract();
 	
 	void MoveForward(float Value);
