@@ -3,8 +3,11 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "UObject/NoExportTypes.h"
+#include "GameplayTagContainer.h"
 #include "VDAction.generated.h"
+
+
+class UVDActionComponent;
 
 /**
  * 
@@ -13,6 +16,18 @@ UCLASS(Blueprintable)
 class ROGUELIKECOURSE_API UVDAction : public UObject
 {
 	GENERATED_BODY()
+	
+protected:
+
+	UFUNCTION(BlueprintCallable, Category = "Actions")
+	UVDActionComponent* GetOwningComponent() const;
+	
+	UPROPERTY(EditDefaultsOnly, Category = "Tags")
+	FGameplayTagContainer GrantsTags;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Tags")
+	FGameplayTagContainer BlockedTags;
+	
 public:
 
 	/* Action nickname to start/stop w/o a reference to thee object */

@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameplayTagContainer.h"
 #include "Components/ActorComponent.h"
 #include "VDActionComponent.generated.h"
 
@@ -15,6 +16,9 @@ class ROGUELIKECOURSE_API UVDActionComponent : public UActorComponent
 
 public:	
 
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tags")
+	FGameplayTagContainer ActiveGameplayTags;
+	
 	UFUNCTION(BlueprintCallable, Category = "Actions")
 	void AddAction(TSubclassOf<UVDAction> ActionClass);
 
