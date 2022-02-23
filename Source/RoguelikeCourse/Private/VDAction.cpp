@@ -39,6 +39,11 @@ bool UVDAction::IsRunning() const
 
 bool UVDAction::CanStart_Implementation(AActor* Instigator)
 {
+	if(IsRunning())
+	{
+		return false;
+	}
+	
 	UVDActionComponent* ActionComponent = GetOwningComponent();
 	if(ActionComponent->ActiveGameplayTags.HasAny(BlockedTags))
 	{
