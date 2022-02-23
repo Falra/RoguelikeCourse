@@ -15,7 +15,7 @@ class ROGUELIKECOURSE_API UVDActionComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:	
-
+	
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tags")
 	FGameplayTagContainer ActiveGameplayTags;
 	

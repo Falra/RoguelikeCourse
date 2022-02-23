@@ -30,6 +30,9 @@ protected:
 	
 public:
 
+	UFUNCTION(BlueprintNativeEvent, Category = "Actions")
+	bool CanStart(AActor* Instigator);
+	
 	/* Action nickname to start/stop w/o a reference to thee object */
 	UPROPERTY(EditDefaultsOnly, Category = "Actions")
 	FName ActionName;

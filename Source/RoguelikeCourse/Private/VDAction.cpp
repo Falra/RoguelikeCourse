@@ -26,6 +26,16 @@ UVDActionComponent* UVDAction::GetOwningComponent() const
 	return Cast<UVDActionComponent>(GetOuter());
 }
 
+bool UVDAction::CanStart_Implementation(AActor* Instigator)
+{
+	UVDActionComponent* ActionComponent = GetOwningComponent();
+	if(ActionComponent->ActiveGameplayTags.HasAny(BlockedTags))
+	{
+		return false;
+	}
+	return true;
+}
+
 UWorld* UVDAction::GetWorld() const
 {
 	UActorComponent* Comp = Cast<UActorComponent>(GetOuter());
