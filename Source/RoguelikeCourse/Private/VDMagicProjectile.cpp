@@ -32,10 +32,14 @@ void AVDMagicProjectile::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent
 		}
 		*/
 
+		//static FGameplayTag Tag = FGameplayTag::RequestGameplayTag("Status.Parrying"); 
+		
 		UVDActionComponent* ActionComponent = OtherActor->FindComponentByClass<UVDActionComponent>();
 		if(ActionComponent && ActionComponent->ActiveGameplayTags.HasTag(ParryTag))
 		{
 			MoveComponent->Velocity = - MoveComponent->Velocity;
+			SetInstigator(Cast<APawn>(OtherActor));
+			return;
 		}
 		
 		if (UVDGameplayFunctionLibrary::ApplyDirectionalDamage(GetInstigator(), OtherActor, DamageAmount, SweepResult))
