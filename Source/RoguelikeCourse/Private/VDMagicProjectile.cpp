@@ -2,8 +2,11 @@
 
 
 #include "VDMagicProjectile.h"
+
+#include "VDActionComponent.h"
 #include "VDAttributeComponent.h"
 #include "VDGameplayFunctionLibrary.h"
+#include "Components/SphereComponent.h"
 #include "Particles/ParticleSystemComponent.h"
 
 // Sets default values
@@ -28,6 +31,13 @@ void AVDMagicProjectile::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent
 			Explode();
 		}
 		*/
+
+		UVDActionComponent* ActionComponent = OtherActor->FindComponentByClass<UVDActionComponent>();
+		if(ActionComponent && ActionComponent->ActiveGameplayTags.HasTag(ParryTag))
+		{
+			MoveComponent->Velocity = - MoveComponent->Velocity;
+		}
+		
 		if (UVDGameplayFunctionLibrary::ApplyDirectionalDamage(GetInstigator(), OtherActor, DamageAmount, SweepResult))
 		{
 			Explode();
