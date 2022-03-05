@@ -6,6 +6,7 @@
 #include "AIController.h"
 #include "BrainComponent.h"
 #include "DrawDebugHelpers.h"
+#include "VDActionComponent.h"
 #include "VDAttributeComponent.h"
 #include "VDWorldUserWidget.h"
 #include "BehaviorTree/BlackboardComponent.h"
@@ -19,6 +20,8 @@ AVDAICharacter::AVDAICharacter()
  	PawnSensingComp = CreateDefaultSubobject<UPawnSensingComponent>("PawnSensingComp");
 
 	AttributeComponent = CreateDefaultSubobject<UVDAttributeComponent>("AttributeComponent");
+
+	ActionComponent = CreateDefaultSubobject<UVDActionComponent>("ActionComponent");
 	
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 

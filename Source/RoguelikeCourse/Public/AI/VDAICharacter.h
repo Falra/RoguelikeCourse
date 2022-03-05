@@ -6,8 +6,9 @@
 #include "GameFramework/Character.h"
 #include "VDAICharacter.generated.h"
 
+class UVDActionComponent;
 class UVDAttributeComponent;
-class  UPawnSensingComponent;
+class UPawnSensingComponent;
 class UVDWorldUserWidget;
 
 UCLASS()
@@ -39,6 +40,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "UI")
 	UVDWorldUserWidget* ActiveHealthBar;
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	UVDActionComponent* ActionComponent;
 
 	UFUNCTION()
 	void OnPawnSeen(APawn* Pawn);
