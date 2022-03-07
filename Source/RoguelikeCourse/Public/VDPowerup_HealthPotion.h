@@ -16,9 +16,6 @@ class ROGUELIKECOURSE_API AVDPowerup_HealthPotion : public AVDPowerupActor
 
 protected:
 
-	UPROPERTY(VisibleAnywhere, Category = "Components")
-	UStaticMeshComponent* MeshComp;
-
 	UPROPERTY(EditAnywhere, Category = "HealthPotion")
 	int32 CreditCost;
 

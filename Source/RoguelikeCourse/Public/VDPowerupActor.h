@@ -8,8 +8,9 @@
 #include "VDPowerupActor.generated.h"
 
 class USphereComponent;
+class UStaticMeshComponent;
 
-UCLASS()
+UCLASS(ABSTRACT)
 class ROGUELIKECOURSE_API AVDPowerupActor : public AActor, public IVDGameplayInterface
 {
 	GENERATED_BODY()
@@ -31,6 +32,9 @@ protected:
 
 	UPROPERTY(VisibleAnywhere, Category = "Components")
 	USphereComponent* SphereComp;
+
+	UPROPERTY(VisibleAnywhere, Category = "Components")
+	UStaticMeshComponent* MeshComp;
 
 public:	
 	void Interact_Implementation(APawn* InstigatorPawn) override;

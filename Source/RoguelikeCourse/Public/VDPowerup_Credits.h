@@ -16,9 +16,6 @@ class ROGUELIKECOURSE_API AVDPowerup_Credits : public AVDPowerupActor
 
 protected:
 
-	UPROPERTY(VisibleAnywhere, Category = "Components")
-	UStaticMeshComponent* MeshComp;
-
 	UPROPERTY(EditAnywhere, Category = "Credits")
 	int32 CreditsAmount;
 

@@ -8,11 +8,6 @@
 
 AVDPowerup_HealthPotion::AVDPowerup_HealthPotion()
 {
-	MeshComp = CreateDefaultSubobject<UStaticMeshComponent>("MeshComp");
-	// Disable collision, instead we use SphereComp to handle interaction queries
-	MeshComp->SetCollisionEnabled(ECollisionEnabled::NoCollision);
-	MeshComp->SetupAttachment(RootComponent);
-
 	CreditCost = 50;
 }
 
