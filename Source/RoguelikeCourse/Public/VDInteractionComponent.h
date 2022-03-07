@@ -13,7 +13,17 @@ class ROGUELIKECOURSE_API UVDInteractionComponent : public UActorComponent
 	GENERATED_BODY()
 
 public:	
-	UVDInteractionComponent();
 
 	void PrimaryInteract();
+
+protected:
+
+	virtual void BeginPlay() override;
+
+public:	
+
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+	UVDInteractionComponent();
+		
 };

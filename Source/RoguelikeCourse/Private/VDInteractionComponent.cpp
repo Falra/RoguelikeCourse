@@ -9,9 +9,9 @@
 static TAutoConsoleVariable<bool> CVarDebugDrawInteraction(TEXT("vd.InteractionDebugDraw"), false,
 	TEXT("Enable Debug lines for Interact Component"));
 
-// Sets default values for this component's properties
 UVDInteractionComponent::UVDInteractionComponent()
 {
+	PrimaryComponentTick.bCanEverTick = true;
 }
 
 void UVDInteractionComponent::PrimaryInteract()
@@ -57,4 +57,15 @@ void UVDInteractionComponent::PrimaryInteract()
 	{
 		DrawDebugLine(GetWorld(), EyeLocation, End, LineColor, false, 2.0f, 0 , 2.0f);
 	}
+}
+
+void UVDInteractionComponent::BeginPlay()
+{
+	Super::BeginPlay();
+}
+
+void UVDInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType,
+	FActorComponentTickFunction* ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
