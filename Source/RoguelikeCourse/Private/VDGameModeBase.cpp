@@ -201,10 +201,11 @@ void AVDGameModeBase::OnActorKilled(AActor* VictimActor, AActor* Killer)
 	APawn* KillerPawn = Cast<APawn>(Killer);
 	if (KillerPawn)
 	{
-		if (AVDPlayerState* PS = KillerPawn->GetPlayerState<AVDPlayerState>()) // < can cast and check for nullptr within if-statement.
-			{
+		AVDPlayerState* PS = KillerPawn->GetPlayerState<AVDPlayerState>();
+		if (PS) 
+		{
 			PS->AddCredits(CreditsPerKill);
-			}
+		}
 	}
 }
 

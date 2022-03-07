@@ -3,6 +3,11 @@
 
 #include "VDPlayerState.h"
 
+int32 AVDPlayerState::GetCredits() const
+{
+	return Credits;
+}
+
 void AVDPlayerState::AddCredits(int32 Delta)
 {
 	// Avoid user-error of adding a negative amount or zero
