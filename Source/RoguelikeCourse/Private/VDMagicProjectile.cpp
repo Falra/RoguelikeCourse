@@ -4,6 +4,7 @@
 #include "VDMagicProjectile.h"
 
 #include "VDActionComponent.h"
+#include "VDActionEffect.h"
 #include "VDAttributeComponent.h"
 #include "VDGameplayFunctionLibrary.h"
 #include "Components/SphereComponent.h"
@@ -45,6 +46,11 @@ void AVDMagicProjectile::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent
 		if (UVDGameplayFunctionLibrary::ApplyDirectionalDamage(GetInstigator(), OtherActor, DamageAmount, SweepResult))
 		{
 			Explode();
+
+			if(ActionComponent)
+			{
+				ActionComponent->AddAction(GetInstigator(), ActionEffectClass);
+			}
 		}
 	}
 }

@@ -8,6 +8,8 @@
 #include "GameFramework/ProjectileMovementComponent.h"
 #include "VDMagicProjectile.generated.h"
 
+class UVDActionEffect;
+
 UCLASS()
 class ROGUELIKECOURSE_API AVDMagicProjectile : public AVDProjectileBase // Re-parented from AActor
 {
@@ -20,6 +22,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "Damage")
 	FGameplayTag ParryTag;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Damage")
+	TSubclassOf<UVDActionEffect> ActionEffectClass;
 	
 	UFUNCTION()
 	void OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult & SweepResult);
