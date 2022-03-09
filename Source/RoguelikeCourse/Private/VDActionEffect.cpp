@@ -25,6 +25,11 @@ void UVDActionEffect::StartAction_Implementation(AActor* Instigator)
 
 void UVDActionEffect::StopAction_Implementation(AActor* Instigator)
 {
+	if(GetWorld()->GetTimerManager().GetTimerRemaining(PeriodHandle) < KINDA_SMALL_NUMBER)
+	{
+		ExecutePeriodicEffect(Instigator);
+	}
+		
 	Super::StopAction_Implementation(Instigator);
 
 	GetWorld()->GetTimerManager().ClearTimer(PeriodHandle);
@@ -33,7 +38,7 @@ void UVDActionEffect::StopAction_Implementation(AActor* Instigator)
 	UVDActionComponent* ActionComponent = GetOwningComponent();
 	if(ActionComponent)
 	{
-		//ActionComponent->RemoveAction(this);
+		ActionComponent->RemoveAction(this);
 	}
 }
 

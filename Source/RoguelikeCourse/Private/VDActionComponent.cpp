@@ -45,6 +45,15 @@ void UVDActionComponent::AddAction(TSubclassOf<UVDAction> ActionClass)
 	}
 }
 
+void UVDActionComponent::RemoveAction(UVDAction* ActionToRemove)
+{
+	if(!ensure(ActionToRemove && !ActionToRemove->IsRunning()))
+	{
+		return;
+	}
+	Actions.Remove(ActionToRemove);
+}
+
 bool UVDActionComponent::StartActionByName(AActor* Instigator, FName ActionName)
 {
 	for(UVDAction* Action : Actions)
