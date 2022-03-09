@@ -2,4 +2,41 @@
 
 
 #include "VDActionEffect.h"
+#include "VDActionComponent.h"
 
+void UVDActionEffect::StartAction_Implementation(AActor* Instigator)
+{
+	Super::StartAction_Implementation(Instigator);
+
+	if(Duration > 0.0f)
+	{
+		FTimerDelegate Delegate;
+		Delegate.BindUFunction(this, "StopAction", Instigator);
+		GetWorld()->GetTimerManager().SetTimer(DurationHandle, Delegate, Duration, false);
+	}
+
+	if(Period > 0.0f)
+	{
+		FTimerDelegate Delegate;
+		Delegate.BindUFunction(this, "ExecutePeriodicEffect", Instigator);
+		GetWorld()->GetTimerManager().SetTimer(PeriodHandle, Delegate, Period, true);
+	}
+}
+
+void UVDActionEffect::StopAction_Implementation(AActor* Instigator)
+{
+	Super::StopAction_Implementation(Instigator);
+
+	GetWorld()->GetTimerManager().ClearTimer(PeriodHandle);
+	GetWorld()->GetTimerManager().ClearTimer(DurationHandle);
+
+	UVDActionComponent* ActionComponent = GetOwningComponent();
+	if(ActionComponent)
+	{
+		//ActionComponent->RemoveAction(this);
+	}
+}
+
+void UVDActionEffect::ExecutePeriodicEffect_Implementation(AActor* Instigator)
+{
+}
