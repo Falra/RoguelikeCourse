@@ -16,6 +16,8 @@ class ROGUELIKECOURSE_API UVDActionEffect : public UVDAction
 
 public:
 
+	UVDActionEffect();
+	
 	virtual void StartAction_Implementation(AActor* Instigator) override;
 
 	virtual void StopAction_Implementation(AActor* Instigator) override;

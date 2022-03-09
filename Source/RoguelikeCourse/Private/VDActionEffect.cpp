@@ -4,6 +4,11 @@
 #include "VDActionEffect.h"
 #include "VDActionComponent.h"
 
+UVDActionEffect::UVDActionEffect()
+{
+	bAutoStart = true;
+}
+
 void UVDActionEffect::StartAction_Implementation(AActor* Instigator)
 {
 	Super::StartAction_Implementation(Instigator);

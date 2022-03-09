@@ -32,6 +32,10 @@ protected:
 	
 public:
 
+	/* start immediately when added to an action component */
+	UPROPERTY(EditDefaultsOnly, Category = "Actions")
+	bool bAutoStart;
+
 	UFUNCTION(BlueprintCallable, Category = "Actions")
 	bool IsRunning() const;
 	

@@ -18,7 +18,7 @@ void UVDActionComponent::BeginPlay()
 
 	for(TSubclassOf<UVDAction> ActionClass : DefaultActions)
 	{
-		AddAction(ActionClass);
+		AddAction(GetOwner(), ActionClass);
 	}
 }
 
@@ -31,7 +31,7 @@ void UVDActionComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 	GEngine->AddOnScreenDebugMessage(-1, 0.0f, FColor::White, DebugMsg);
 }
 
-void UVDActionComponent::AddAction(TSubclassOf<UVDAction> ActionClass)
+void UVDActionComponent::AddAction(AActor* Instigator, TSubclassOf<UVDAction> ActionClass)
 {
 	if(!ensure(ActionClass))
 	{
@@ -42,6 +42,10 @@ void UVDActionComponent::AddAction(TSubclassOf<UVDAction> ActionClass)
 	if(ensure(NewAction))
 	{
 		Actions.Add(NewAction);
+		if(NewAction->bAutoStart && ensure(NewAction->CanStart(Instigator)))
+		{
+			NewAction->StartAction(Instigator);
+		}
 	}
 }
 
