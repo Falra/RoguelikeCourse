@@ -18,7 +18,12 @@ public:
 
 protected:
 
+	void FindBestInteractable();
+	
 	virtual void BeginPlay() override;
+
+	UPROPERTY()
+	AActor* FocusedActor;
 
 public:	
 

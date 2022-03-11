@@ -16,6 +16,31 @@ UVDInteractionComponent::UVDInteractionComponent()
 
 void UVDInteractionComponent::PrimaryInteract()
 {
+	if(FocusedActor == nullptr)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, "No Focus Actor to interact");
+		return;
+	}
+
+	APawn* MyPawn = Cast<APawn>(GetOwner());
+	IVDGameplayInterface::Execute_Interact(FocusedActor, MyPawn);
+}
+
+void UVDInteractionComponent::BeginPlay()
+{
+	Super::BeginPlay();
+}
+
+void UVDInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType,
+                                            FActorComponentTickFunction* ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	FindBestInteractable();
+}
+
+void UVDInteractionComponent::FindBestInteractable()
+{
 	bool bDebugDraw = CVarDebugDrawInteraction.GetValueOnGameThread();
 	
 	FCollisionObjectQueryParams ObjectQueryParams;
@@ -48,8 +73,7 @@ void UVDInteractionComponent::PrimaryInteract()
 		AActor* HitActor = Hit.GetActor();
 		if (HitActor && HitActor->Implements<UVDGameplayInterface>())
 		{
-			APawn* MyPawn = Cast<APawn>(MyOwner);
-			IVDGameplayInterface::Execute_Interact(HitActor, MyPawn);
+			FocusedActor = HitActor;
 			break;
 		}
 	}
@@ -57,15 +81,4 @@ void UVDInteractionComponent::PrimaryInteract()
 	{
 		DrawDebugLine(GetWorld(), EyeLocation, End, LineColor, false, 2.0f, 0 , 2.0f);
 	}
-}
-
-void UVDInteractionComponent::BeginPlay()
-{
-	Super::BeginPlay();
-}
-
-void UVDInteractionComponent::TickComponent(float DeltaTime, ELevelTick TickType,
-	FActorComponentTickFunction* ThisTickFunction)
-{
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 }
