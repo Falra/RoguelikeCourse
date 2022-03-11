@@ -5,9 +5,11 @@
 
 #include "DrawDebugHelpers.h"
 #include "VDGameplayInterface.h"
+#include "Blueprint/UserWidget.h"
+#include "VDWorldUserWidget.h"
 
 static TAutoConsoleVariable<bool> CVarDebugDrawInteraction(TEXT("vd.InteractionDebugDraw"), false,
-	TEXT("Enable Debug lines for Interact Component"));
+                                                           TEXT("Enable Debug lines for Interact Component"));
 
 UVDInteractionComponent::UVDInteractionComponent()
 {
@@ -62,10 +64,13 @@ void UVDInteractionComponent::FindBestInteractable()
 	TArray<FHitResult> Hits;
 	bool bBlockingHit = GetWorld()->SweepMultiByObjectType(Hits, EyeLocation, End, FQuat::Identity, ObjectQueryParams, Shape);
 	FColor LineColor = bBlockingHit ? FColor::Green : FColor::Red;
+
+	// Clear before trying to find
+	FocusedActor = nullptr;
 	
 	for (FHitResult Hit : Hits)
 	{
-		if(bDebugDraw)
+		if (bDebugDraw)
 		{
 			DrawDebugSphere(GetWorld(), Hit.ImpactPoint, Radius, 32, LineColor, false, 2.0f);
 		}
@@ -77,7 +82,33 @@ void UVDInteractionComponent::FindBestInteractable()
 			break;
 		}
 	}
-	if(bDebugDraw)
+
+	if (FocusedActor)
+	{
+		if (DefaultWidgetInstance == nullptr && ensure(DefaultWidgetClass))
+		{
+			DefaultWidgetInstance = CreateWidget<UVDWorldUserWidget>(GetWorld(), DefaultWidgetClass);
+		}
+
+		if (DefaultWidgetInstance)
+		{
+			DefaultWidgetInstance->AttachedActor = FocusedActor;
+
+			if (!DefaultWidgetInstance->IsInViewport())
+			{
+				DefaultWidgetInstance->AddToViewport();
+			}
+		}
+	}
+	else
+	{
+		if (DefaultWidgetInstance)
+		{
+			DefaultWidgetInstance->RemoveFromParent();
+		}
+	}
+	
+	if (bDebugDraw)
 	{
 		DrawDebugLine(GetWorld(), EyeLocation, End, LineColor, false, 2.0f, 0 , 2.0f);
 	}
