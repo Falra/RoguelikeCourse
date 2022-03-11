@@ -14,6 +14,10 @@ static TAutoConsoleVariable<bool> CVarDebugDrawInteraction(TEXT("vd.InteractionD
 UVDInteractionComponent::UVDInteractionComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
+
+	TraceDistance = 500.0f;
+	TraceRadius = 30.0f;
+	CollisionChannel = ECC_WorldDynamic;
 }
 
 void UVDInteractionComponent::PrimaryInteract()
@@ -46,21 +50,20 @@ void UVDInteractionComponent::FindBestInteractable()
 	bool bDebugDraw = CVarDebugDrawInteraction.GetValueOnGameThread();
 	
 	FCollisionObjectQueryParams ObjectQueryParams;
-	ObjectQueryParams.AddObjectTypesToQuery(ECC_WorldDynamic);
+	ObjectQueryParams.AddObjectTypesToQuery(CollisionChannel);
 
 	AActor* MyOwner = GetOwner();
 	
 	FVector EyeLocation;
 	FRotator EyeRotation;
 	MyOwner->GetActorEyesViewPoint(EyeLocation, EyeRotation);
-	FVector End = EyeLocation + (EyeRotation.Vector() * 1000);
+	FVector End = EyeLocation + (EyeRotation.Vector() * TraceDistance);
 
 	// FHitResult Hit;
 	// bool bBlockingHit = GetWorld()->LineTraceSingleByObjectType(Hit, EyeLocation, End, ObjectQueryParams);
 
 	FCollisionShape Shape;
-	float Radius = 30.0f;
-	Shape.SetSphere(Radius);
+	Shape.SetSphere(TraceRadius);
 	TArray<FHitResult> Hits;
 	bool bBlockingHit = GetWorld()->SweepMultiByObjectType(Hits, EyeLocation, End, FQuat::Identity, ObjectQueryParams, Shape);
 	FColor LineColor = bBlockingHit ? FColor::Green : FColor::Red;
@@ -72,7 +75,7 @@ void UVDInteractionComponent::FindBestInteractable()
 	{
 		if (bDebugDraw)
 		{
-			DrawDebugSphere(GetWorld(), Hit.ImpactPoint, Radius, 32, LineColor, false, 2.0f);
+			DrawDebugSphere(GetWorld(), Hit.ImpactPoint, TraceRadius, 32, LineColor, false, 2.0f);
 		}
 		
 		AActor* HitActor = Hit.GetActor();
