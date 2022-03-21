@@ -20,10 +20,13 @@ AVDItemChest::AVDItemChest()
 void AVDItemChest::Interact_Implementation(APawn* InstigatorPawn)
 {
 	bLidOpened = !bLidOpened;
+	OnRep_LidOpened();
+}
+
+void AVDItemChest::OnRep_LidOpened()
+{
 	float CurrentPitch = bLidOpened ? TargetPitch : 0.f;
-	
 	LidMesh->SetRelativeRotation(FRotator(CurrentPitch, 0, 0));
-	
 }
 
 void AVDItemChest::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const

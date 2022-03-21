@@ -24,8 +24,11 @@ public:
 
 protected:
 
-	UPROPERTY(Replicated)
+	UPROPERTY(ReplicatedUsing="OnRep_LidOpened", BlueprintReadOnly) // RepNotify
 	bool bLidOpened;
+
+	UFUNCTION()
+	void OnRep_LidOpened();
 	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UStaticMeshComponent* BaseMesh;
