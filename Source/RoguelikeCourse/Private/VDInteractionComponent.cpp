@@ -20,18 +20,6 @@ UVDInteractionComponent::UVDInteractionComponent()
 	CollisionChannel = ECC_WorldDynamic;
 }
 
-void UVDInteractionComponent::PrimaryInteract()
-{
-	if(FocusedActor == nullptr)
-	{
-		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, "No Focus Actor to interact");
-		return;
-	}
-
-	APawn* MyPawn = Cast<APawn>(GetOwner());
-	IVDGameplayInterface::Execute_Interact(FocusedActor, MyPawn);
-}
-
 void UVDInteractionComponent::BeginPlay()
 {
 	Super::BeginPlay();
@@ -115,4 +103,21 @@ void UVDInteractionComponent::FindBestInteractable()
 	{
 		DrawDebugLine(GetWorld(), EyeLocation, End, LineColor, false, 2.0f, 0 , 2.0f);
 	}
+}
+
+void UVDInteractionComponent::PrimaryInteract()
+{
+	ServerInteract();
+}
+
+void UVDInteractionComponent::ServerInteract_Implementation()
+{
+	if(FocusedActor == nullptr)
+	{
+		GEngine->AddOnScreenDebugMessage(-1, 1.0f, FColor::Red, "No Focus Actor to interact");
+		return;
+	}
+
+	APawn* MyPawn = Cast<APawn>(GetOwner());
+	IVDGameplayInterface::Execute_Interact(FocusedActor, MyPawn);
 }
