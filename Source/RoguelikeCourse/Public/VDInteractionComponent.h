@@ -23,7 +23,7 @@ protected:
 	// Unreliable - Not guaranteed, packet can get lost and won't retry.
 	
 	UFUNCTION(Server, Reliable)
-	void ServerInteract();
+	void ServerInteract(AActor* InFocus);
 	
 	void FindBestInteractable();
 	
