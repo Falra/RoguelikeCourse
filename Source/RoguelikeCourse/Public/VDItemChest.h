@@ -23,6 +23,10 @@ public:
 	void Interact_Implementation(APawn* InstigatorPawn);
 
 protected:
+
+	UPROPERTY(Replicated)
+	bool bLidOpened;
+	
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly)
 	UStaticMeshComponent* BaseMesh;
 

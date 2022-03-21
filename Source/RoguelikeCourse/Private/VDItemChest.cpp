@@ -2,11 +2,7 @@
 
 
 #include "VDItemChest.h"
-
-void AVDItemChest::Interact_Implementation(APawn* InstigatorPawn)
-{
-	LidMesh->SetRelativeRotation(FRotator(TargetPitch, 0, 0));
-}
+#include "Net/UnrealNetwork.h"
 
 AVDItemChest::AVDItemChest()
 {
@@ -17,4 +13,23 @@ AVDItemChest::AVDItemChest()
 	LidMesh->SetupAttachment(BaseMesh);
 
 	TargetPitch = 110;
+
+	SetReplicates(true);
 }
+
+void AVDItemChest::Interact_Implementation(APawn* InstigatorPawn)
+{
+	bLidOpened = !bLidOpened;
+	float CurrentPitch = bLidOpened ? TargetPitch : 0.f;
+	
+	LidMesh->SetRelativeRotation(FRotator(CurrentPitch, 0, 0));
+	
+}
+
+void AVDItemChest::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AVDItemChest, bLidOpened);
+}
+
