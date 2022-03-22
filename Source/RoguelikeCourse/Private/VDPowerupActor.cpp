@@ -17,6 +17,8 @@ AVDPowerupActor::AVDPowerupActor()
 	MeshComp->SetupAttachment(RootComponent);
 	
 	RespawnTime = 10.0f;
+
+	SetReplicates(true);
 }
 
 void AVDPowerupActor::Interact_Implementation(APawn* InstigatorPawn)

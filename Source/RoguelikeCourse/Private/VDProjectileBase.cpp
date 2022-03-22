@@ -32,6 +32,8 @@ AVDProjectileBase::AVDProjectileBase()
 
 	ImpactShakeInnerRadius = 250.0f;
 	ImpactShakeOuterRadius = 2500.0f;
+
+	SetReplicates(true);
 }
 
 void AVDProjectileBase::OnActorHit(UPrimitiveComponent* HitComponent, AActor* OtherActor, UPrimitiveComponent* OtherComp, FVector NormalImpulse, const FHitResult& Hit)
