@@ -95,6 +95,12 @@ bool UVDAttributeComponent::IsActorAlive(AActor* Actor)
 	return false;
 }
 
+void UVDAttributeComponent::MulticastHealthChanged_Implementation(AActor* InstigatorActor, float NewHealth,
+                                                                  float DeltaHealth)
+{
+	OnHealthChanged.Broadcast(InstigatorActor, this, NewHealth, DeltaHealth);
+}
+
 void UVDAttributeComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);

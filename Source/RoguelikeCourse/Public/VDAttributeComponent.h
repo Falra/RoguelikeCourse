@@ -35,6 +35,9 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Replicated, Category = "Attributes")
 	float HealthMax;
 
+	UFUNCTION(NetMulticast, Reliable) // @FIXME: mark as unreliable after move material change behaviour
+	void MulticastHealthChanged(AActor* InstigatorActor, float NewHealth, float DeltaHealth); 
+
 public:	
 	UPROPERTY(BlueprintAssignable)
 	FOnHealthChanged OnHealthChanged;
