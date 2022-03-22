@@ -4,14 +4,17 @@
 #include "VDAttributeComponent.h"
 
 #include "VDGameModeBase.h"
+#include "Net/UnrealNetwork.h"
 
 static TAutoConsoleVariable<float> CVarDamageMultiplier(TEXT("vd.DamageMultiplier"), 1.0f,
-	TEXT("Global damage multipier for attribute component"), ECVF_Cheat);
+                                                        TEXT("Global damage multipier for attribute component"), ECVF_Cheat);
 
 UVDAttributeComponent::UVDAttributeComponent()
 {
 	HealthMax = 100;
 	Health = HealthMax;
+
+	SetIsReplicatedByDefault(true);
 }
 
 bool UVDAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, float DeltaHealth)
@@ -90,4 +93,13 @@ bool UVDAttributeComponent::IsActorAlive(AActor* Actor)
 		return AttributeComponent->IsAlive();
 	}
 	return false;
+}
+
+void UVDAttributeComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(UVDAttributeComponent, Health);
+	DOREPLIFETIME(UVDAttributeComponent, HealthMax);
+	// DOREPLIFETIME_CONDITION(UVDAttributeComponent, HealthMax, COND_InitialOnly);
 }
