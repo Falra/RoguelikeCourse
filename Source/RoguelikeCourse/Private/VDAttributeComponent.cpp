@@ -35,8 +35,12 @@ bool UVDAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, float Del
 	Health = FMath::Clamp(Health + DeltaHealth, 0.0f, HealthMax);
 
 	float ActualDelta = Health - OldHealth;
-	OnHealthChanged.Broadcast(InstigatorActor, this, Health, ActualDelta);
-
+	//OnHealthChanged.Broadcast(InstigatorActor, this, Health, ActualDelta);
+	if(ActualDelta != 0.0f)
+	{
+		MulticastHealthChanged(InstigatorActor, Health, ActualDelta);
+	}
+	
 	// Died
 	if(ActualDelta <= 0.0f && Health == 0.0f)
 	{
