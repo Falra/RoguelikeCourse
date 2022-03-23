@@ -8,10 +8,11 @@
 UVDActionComponent::UVDActionComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
+	SetIsReplicatedByDefault(true);
 }
 
-
 // Called when the game starts
+
 void UVDActionComponent::BeginPlay()
 {
 	Super::BeginPlay();
@@ -21,7 +22,6 @@ void UVDActionComponent::BeginPlay()
 		AddAction(GetOwner(), ActionClass);
 	}
 }
-
 
 void UVDActionComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
@@ -58,6 +58,11 @@ void UVDActionComponent::RemoveAction(UVDAction* ActionToRemove)
 	Actions.Remove(ActionToRemove);
 }
 
+void UVDActionComponent::ServerStartAction_Implementation(AActor* Instigator, FName ActionName)
+{
+	StartActionByName(Instigator, ActionName);
+}
+
 bool UVDActionComponent::StartActionByName(AActor* Instigator, FName ActionName)
 {
 	for(UVDAction* Action : Actions)
@@ -70,6 +75,13 @@ bool UVDActionComponent::StartActionByName(AActor* Instigator, FName ActionName)
 				GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Red, FailedMsg);
 				continue;
 			}
+
+			// is Client?
+			if(!GetOwner()->HasAuthority())
+			{
+				ServerStartAction(Instigator, ActionName);
+			}
+			
 			Action->StartAction(Instigator);
 			return true;
 		}
