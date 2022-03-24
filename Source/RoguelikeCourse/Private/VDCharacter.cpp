@@ -128,11 +128,16 @@ void AVDCharacter::PrimaryInteract()
 void AVDCharacter::OnHealthChanged(AActor* InstigatorActor, UVDAttributeComponent* OwningComponent, float NewHealth,
                                    float DeltaHealth)
 {
+	// Damaged
 	if (DeltaHealth < 0.0f)
 	{
 		GetMesh()->SetScalarParameterValueOnMaterials(TimeToHitParamName, GetWorld()->TimeSeconds);
+		// Rage added equal to damage received (Abs to turn into positive rage number)
+		float RageDelta = FMath::Abs(DeltaHealth);
+		AttributeComponent->ApplyRage(InstigatorActor, RageDelta);
 	}
-	
+
+	// Died
 	if (NewHealth <= 0.0f && DeltaHealth < 0.0f)
 	{
 		APlayerController* PC = Cast<APlayerController>(GetController());
