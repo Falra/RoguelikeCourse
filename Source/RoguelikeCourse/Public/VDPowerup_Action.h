@@ -21,5 +21,5 @@ protected:
 	TSubclassOf<UVDAction> ActionToGrant;
 
 public:
-	void Interact_Implementation(APawn* InstigatorPawn) override;
+	virtual void Interact_Implementation(APawn* InstigatorPawn) override;
 };
