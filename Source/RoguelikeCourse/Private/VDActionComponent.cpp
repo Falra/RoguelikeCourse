@@ -58,6 +58,19 @@ void UVDActionComponent::RemoveAction(UVDAction* ActionToRemove)
 	Actions.Remove(ActionToRemove);
 }
 
+UVDAction* UVDActionComponent::GetAction(TSubclassOf<UVDAction> ActionClass) const
+{
+	for (UVDAction* Action : Actions)
+	{
+		if (Action && Action->IsA(ActionClass))
+		{
+			return Action;
+		}
+	}
+
+	return nullptr;
+}
+
 void UVDActionComponent::ServerStartAction_Implementation(AActor* Instigator, FName ActionName)
 {
 	StartActionByName(Instigator, ActionName);

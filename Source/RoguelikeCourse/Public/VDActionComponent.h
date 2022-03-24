@@ -25,6 +25,10 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Actions")
 	void RemoveAction(UVDAction* ActionToRemove);
 
+	/* Returns first occurance of action matching the class provided */
+	UFUNCTION(BlueprintCallable, Category = "Actions")
+	UVDAction* GetAction(TSubclassOf<UVDAction> ActionClass) const;
+	
 	UFUNCTION(BlueprintCallable, Category = "Actions")
 	bool StartActionByName(AActor* Instigator, FName ActionName);
 
@@ -36,7 +40,7 @@ public:
 protected:
 
 	UFUNCTION(Server, Reliable)
-	void ServerStartAction(AActor* Instigator, FName ActionName)
+	void ServerStartAction(AActor* Instigator, FName ActionName);
 	
 	UPROPERTY()
 	TArray<UVDAction*> Actions;
