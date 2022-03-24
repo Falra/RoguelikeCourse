@@ -22,13 +22,17 @@ AVDAICharacter::AVDAICharacter()
 	AttributeComponent = CreateDefaultSubobject<UVDAttributeComponent>("AttributeComponent");
 
 	ActionComponent = CreateDefaultSubobject<UVDActionComponent>("ActionComponent");
-	
+
+	// Ensures we receive a controlled when spawned in the level by our gamemode
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
+	// Disabled on capsule to let projectiles pass through capsule and hit mesh instead
 	GetCapsuleComponent()->SetCollisionResponseToChannel(ECC_WorldDynamic, ECR_Ignore);
+	// Enabled on mesh to react to incoming projectiles
 	GetMesh()->SetGenerateOverlapEvents(true);
 	
 	TimeToHitParamName = "TimeToHit";
+	TargetActorKey = "TargetActor";
 }
 
 void AVDAICharacter::PostInitializeComponents()
@@ -42,9 +46,21 @@ void AVDAICharacter::PostInitializeComponents()
 
 void AVDAICharacter::OnPawnSeen(APawn* Pawn)
 {
-	SetTargetActor(Pawn);
+	// Ignore if target already set
+	if (GetTargetActor() != Pawn)
+	{
+		SetTargetActor(Pawn);
 
-	// DrawDebugString(GetWorld(), GetActorLocation(), "PLAYER SPOTTED", nullptr, FColor::White, 4.0f, true);
+		UVDWorldUserWidget* NewWidget = CreateWidget<UVDWorldUserWidget>(GetWorld(), SpottedWidgetClass);
+		if (NewWidget)
+		{
+			NewWidget->AttachedActor = this;
+			// Index of 10 (or anything higher than default of 0) places this on top of any other widget.
+			// May end up behind the minion health bar otherwise.
+			NewWidget->AddToViewport(10);
+		}
+	}
+	//DrawDebugString(GetWorld(), GetActorLocation(), "PLAYER SPOTTED", nullptr, FColor::White, 0.5f, true);
 }
 
 void AVDAICharacter::SetTargetActor(AActor* NewTarget)
@@ -52,12 +68,23 @@ void AVDAICharacter::SetTargetActor(AActor* NewTarget)
 	AAIController* AIController = Cast<AAIController>(GetController());
 	if(AIController)
 	{
-		AIController->GetBlackboardComponent()->SetValueAsObject("TargetActor", NewTarget);
+		AIController->GetBlackboardComponent()->SetValueAsObject(TargetActorKey, NewTarget);
 	}	
 }
 
+AActor* AVDAICharacter::GetTargetActor() const
+{
+	AAIController* AIC = Cast<AAIController>(GetController());
+	if (AIC)
+	{
+		return Cast<AActor>(AIC->GetBlackboardComponent()->GetValueAsObject(TargetActorKey));
+	}
+
+	return nullptr;
+}
+
 void AVDAICharacter::OnHealthChanged(AActor* InstigatorActor, UVDAttributeComponent* OwningComponent, float NewHealth,
-	float DeltaHealth)
+                                     float DeltaHealth)
 {
 	if(DeltaHealth < 0.0f)
 	{
