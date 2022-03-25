@@ -28,7 +28,11 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Tags")
 	FGameplayTagContainer BlockedTags;
 
+	UPROPERTY(ReplicatedUsing="OnRep_IsRunning")
 	bool bIsRunning;
+
+	UFUNCTION()
+	void OnRep_IsRunning();
 	
 public:
 

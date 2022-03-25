@@ -18,9 +18,13 @@ void UVDActionComponent::BeginPlay()
 {
 	Super::BeginPlay();
 
-	for(TSubclassOf<UVDAction> ActionClass : DefaultActions)
+	// Server only 
+	if (GetOwner()->HasAuthority())
 	{
-		AddAction(GetOwner(), ActionClass);
+		for (TSubclassOf<UVDAction> ActionClass : DefaultActions)
+		{
+			AddAction(GetOwner(), ActionClass);
+		}
 	}
 }
 

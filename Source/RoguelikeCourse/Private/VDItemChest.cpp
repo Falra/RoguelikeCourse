@@ -35,4 +35,3 @@ void AVDItemChest::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLife
 
 	DOREPLIFETIME(AVDItemChest, bLidOpened);
 }
-

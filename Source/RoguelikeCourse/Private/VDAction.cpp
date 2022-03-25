@@ -4,6 +4,7 @@
 #include "VDAction.h"
 
 #include "VDActionComponent.h"
+#include "Net/UnrealNetwork.h"
 #include "RoguelikeCourse/RoguelikeCourse.h"
 
 void UVDAction::StartAction_Implementation(AActor* Instigator)
@@ -35,6 +36,18 @@ UVDActionComponent* UVDAction::GetOwningComponent() const
 	return Cast<UVDActionComponent>(GetOuter());
 }
 
+void UVDAction::OnRep_IsRunning()
+{
+	if(bIsRunning)
+	{
+		StartAction(nullptr);
+	}
+	else
+	{
+		StopAction(nullptr);
+	}
+}
+
 bool UVDAction::IsRunning() const
 {
 	return bIsRunning;
@@ -63,4 +76,11 @@ UWorld* UVDAction::GetWorld() const
 		return Comp->GetWorld();
 	}
 	return nullptr;
+}
+
+void UVDAction::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(UVDAction, bIsRunning);
 }
