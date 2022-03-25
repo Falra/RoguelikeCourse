@@ -7,6 +7,11 @@
 #include "Net/UnrealNetwork.h"
 #include "RoguelikeCourse/RoguelikeCourse.h"
 
+void UVDAction::Initialize(UVDActionComponent* NewActionComp)
+{
+	ActionComp = NewActionComp;	
+}
+
 void UVDAction::StartAction_Implementation(AActor* Instigator)
 {
 	//UE_LOG(LogTemp, Log, TEXT("Running: %s"), *GetNameSafe(this));
@@ -23,7 +28,7 @@ void UVDAction::StopAction_Implementation(AActor* Instigator)
 	//UE_LOG(LogTemp, Log, TEXT("Stopped: %s"), *GetNameSafe(this));
 	LogOnScreen(this, FString::Printf(TEXT("Stopped: %s"), *ActionName.ToString()), FColor::White);
 	
-	ensureAlways(bIsRunning);
+	//ensureAlways(bIsRunning);
 	
 	UVDActionComponent* ActionComponent = GetOwningComponent();
 	ActionComponent->ActiveGameplayTags.RemoveTags(GrantsTags);
@@ -33,7 +38,10 @@ void UVDAction::StopAction_Implementation(AActor* Instigator)
 
 UVDActionComponent* UVDAction::GetOwningComponent() const
 {
-	return Cast<UVDActionComponent>(GetOuter());
+	//AActor* Actor = Cast<AActor>(GetOuter());
+	//return Actor->GetComponentByClass(UVDActionComponent::StaticClass());
+	//return Cast<UVDActionComponent>(GetOuter());
+	return ActionComp;
 }
 
 void UVDAction::OnRep_IsRunning()
@@ -70,10 +78,10 @@ bool UVDAction::CanStart_Implementation(AActor* Instigator)
 
 UWorld* UVDAction::GetWorld() const
 {
-	UActorComponent* Comp = Cast<UActorComponent>(GetOuter());
-	if(Comp)
+	AActor* Actor = Cast<AActor>(GetOuter());
+	if(Actor)
 	{
-		return Comp->GetWorld();
+		return Actor->GetWorld();
 	}
 	return nullptr;
 }
@@ -83,4 +91,5 @@ void UVDAction::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetim
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
 	DOREPLIFETIME(UVDAction, bIsRunning);
+	DOREPLIFETIME(UVDAction, ActionComp);
 }

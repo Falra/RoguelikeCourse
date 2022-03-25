@@ -19,6 +19,9 @@ class ROGUELIKECOURSE_API UVDAction : public UObject
 	
 protected:
 
+	UPROPERTY(Replicated)
+	UVDActionComponent* ActionComp;
+	
 	UFUNCTION(BlueprintCallable, Category = "Actions")
 	UVDActionComponent* GetOwningComponent() const;
 	
@@ -36,6 +39,8 @@ protected:
 	
 public:
 
+	void Initialize(UVDActionComponent* NewActionComp);
+	
 	/* start immediately when added to an action component */
 	UPROPERTY(EditDefaultsOnly, Category = "Actions")
 	bool bAutoStart;

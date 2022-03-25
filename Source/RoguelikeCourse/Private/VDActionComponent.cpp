@@ -46,7 +46,7 @@ void UVDActionComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 			*GetNameSafe(GetOwner()),
 			*Action->ActionName.ToString(),
 			Action->IsRunning() ? TEXT("true") : TEXT("false"),
-			*GetNameSafe(GetOuter()));
+			*GetNameSafe(Action->GetOuter()));
 
 		LogOnScreen(this, ActionMsg, TextColor, 0.0f);
 	}
@@ -73,9 +73,11 @@ void UVDActionComponent::AddAction(AActor* Instigator, TSubclassOf<UVDAction> Ac
 		return;
 	}
 
-	UVDAction* NewAction = NewObject<UVDAction>(this, ActionClass);
+	UVDAction* NewAction = NewObject<UVDAction>(GetOwner(), ActionClass);
 	if(ensure(NewAction))
 	{
+		NewAction->Initialize(this);
+		
 		Actions.Add(NewAction);
 		if(NewAction->bAutoStart && ensure(NewAction->CanStart(Instigator)))
 		{
