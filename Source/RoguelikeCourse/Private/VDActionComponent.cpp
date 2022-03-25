@@ -4,6 +4,8 @@
 #include "VDActionComponent.h"
 
 #include "VDAction.h"
+#include "Engine/ActorChannel.h"
+#include "Net/UnrealNetwork.h"
 #include "RoguelikeCourse/RoguelikeCourse.h"
 
 UVDActionComponent::UVDActionComponent()
@@ -48,6 +50,20 @@ void UVDActionComponent::TickComponent(float DeltaTime, ELevelTick TickType, FAc
 
 		LogOnScreen(this, ActionMsg, TextColor, 0.0f);
 	}
+}
+
+bool UVDActionComponent::ReplicateSubobjects(UActorChannel* Channel, FOutBunch* Bunch, FReplicationFlags* RepFlags)
+{
+	bool WroteSomething = Super::ReplicateSubobjects(Channel, Bunch, RepFlags);
+
+	for (UVDAction* Action : Actions)
+	{
+		if(Action)
+		{
+			WroteSomething |= Channel->ReplicateSubobject(Action, *Bunch, * RepFlags);
+		}
+	}
+	return WroteSomething;
 }
 
 void UVDActionComponent::AddAction(AActor* Instigator, TSubclassOf<UVDAction> ActionClass)
@@ -135,4 +151,11 @@ bool UVDActionComponent::StopActionByName(AActor* Instigator, FName ActionName)
 		}
 	}
 	return false;
+}
+
+void UVDActionComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(UVDActionComponent, Actions);
 }

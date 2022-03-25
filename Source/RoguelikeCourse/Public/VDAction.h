@@ -57,4 +57,9 @@ public:
 	void StopAction(AActor* Instigator);
 
 	virtual UWorld* GetWorld() const override;
+
+	virtual bool IsSupportedForNetworking() const override
+	{
+		return true;
+	}
 };

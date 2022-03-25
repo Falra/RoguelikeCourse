@@ -42,7 +42,7 @@ protected:
 	UFUNCTION(Server, Reliable)
 	void ServerStartAction(AActor* Instigator, FName ActionName);
 	
-	UPROPERTY()
+	UPROPERTY(Replicated)
 	TArray<UVDAction*> Actions;
 
 	// Granted abilities at game start
@@ -53,4 +53,6 @@ protected:
 
 public:	
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
+
+	virtual bool ReplicateSubobjects(UActorChannel* Channel, FOutBunch* Bunch, FReplicationFlags* RepFlags) override;
 };
