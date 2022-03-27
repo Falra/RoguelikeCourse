@@ -20,7 +20,8 @@ void UVDAction::StartAction_Implementation(AActor* Instigator)
 	UVDActionComponent* ActionComponent = GetOwningComponent();
 	ActionComponent->ActiveGameplayTags.AppendTags(GrantsTags);
 
-	bIsRunning = true;
+	RepData.bIsRunning = true;
+	RepData.Instigator = Instigator;
 }
 
 void UVDAction::StopAction_Implementation(AActor* Instigator)
@@ -33,7 +34,8 @@ void UVDAction::StopAction_Implementation(AActor* Instigator)
 	UVDActionComponent* ActionComponent = GetOwningComponent();
 	ActionComponent->ActiveGameplayTags.RemoveTags(GrantsTags);
 
-	bIsRunning = false;
+	RepData.bIsRunning = false;
+	RepData.Instigator = Instigator;
 }
 
 UVDActionComponent* UVDAction::GetOwningComponent() const
@@ -44,21 +46,21 @@ UVDActionComponent* UVDAction::GetOwningComponent() const
 	return ActionComp;
 }
 
-void UVDAction::OnRep_IsRunning()
+void UVDAction::OnRep_RepData()
 {
-	if(bIsRunning)
+	if(RepData.bIsRunning)
 	{
-		StartAction(nullptr);
+		StartAction(RepData.Instigator);
 	}
 	else
 	{
-		StopAction(nullptr);
+		StopAction(RepData.Instigator);
 	}
 }
 
 bool UVDAction::IsRunning() const
 {
-	return bIsRunning;
+	return RepData.bIsRunning;
 }
 
 bool UVDAction::CanStart_Implementation(AActor* Instigator)
@@ -90,6 +92,6 @@ void UVDAction::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetim
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 
-	DOREPLIFETIME(UVDAction, bIsRunning);
+	DOREPLIFETIME(UVDAction, RepData);
 	DOREPLIFETIME(UVDAction, ActionComp);
 }
