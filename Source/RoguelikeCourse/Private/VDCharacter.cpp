@@ -142,6 +142,8 @@ void AVDCharacter::OnHealthChanged(AActor* InstigatorActor, UVDAttributeComponen
 	{
 		APlayerController* PC = Cast<APlayerController>(GetController());
 		DisableInput(PC);
+		
+		SetLifeSpan(5.0f);
 	}
 }
 
