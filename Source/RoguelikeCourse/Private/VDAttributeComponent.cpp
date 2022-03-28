@@ -34,23 +34,27 @@ bool UVDAttributeComponent::ApplyHealthChange(AActor* InstigatorActor, float Del
 	}
 	
 	float OldHealth = Health;
-
-	Health = FMath::Clamp(Health + DeltaHealth, 0.0f, HealthMax);
-
-	float ActualDelta = Health - OldHealth;
-	//OnHealthChanged.Broadcast(InstigatorActor, this, Health, ActualDelta);
-	if(ActualDelta != 0.0f)
-	{
-		MulticastHealthChanged(InstigatorActor, Health, ActualDelta);
-	}
+	float NewHealth = FMath::Clamp(Health + DeltaHealth, 0.0f, HealthMax);
+	float ActualDelta = NewHealth - OldHealth;
 	
-	// Died
-	if(ActualDelta <= 0.0f && Health == 0.0f)
+	// Is Server?
+	if(GetOwner()->HasAuthority())
 	{
-		AVDGameModeBase* GM = GetWorld()->GetAuthGameMode<AVDGameModeBase>();
-		if(GM)
+		Health = NewHealth;
+		//OnHealthChanged.Broadcast(InstigatorActor, this, Health, ActualDelta);
+		if(ActualDelta != 0.0f)
 		{
-			GM->OnActorKilled(GetOwner(), InstigatorActor);
+			MulticastHealthChanged(InstigatorActor, NewHealth, ActualDelta);
+		}
+
+		// Died
+		if(ActualDelta <= 0.0f && NewHealth == 0.0f)
+		{
+			AVDGameModeBase* GM = GetWorld()->GetAuthGameMode<AVDGameModeBase>();
+			if(GM)
+			{
+				GM->OnActorKilled(GetOwner(), InstigatorActor);
+			}
 		}
 	}
 	

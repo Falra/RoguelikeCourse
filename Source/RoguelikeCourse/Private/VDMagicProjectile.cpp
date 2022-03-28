@@ -42,7 +42,9 @@ void AVDMagicProjectile::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent
 			SetInstigator(Cast<APawn>(OtherActor));
 			return;
 		}
-		
+
+
+		// Apply damage & impulse
 		if (UVDGameplayFunctionLibrary::ApplyDirectionalDamage(GetInstigator(), OtherActor, DamageAmount, SweepResult))
 		{
 			Explode();
