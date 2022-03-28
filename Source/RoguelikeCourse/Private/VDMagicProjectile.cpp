@@ -49,7 +49,7 @@ void AVDMagicProjectile::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent
 		{
 			Explode();
 
-			if(ActionComponent)
+			if(ActionComponent && HasAuthority())
 			{
 				ActionComponent->AddAction(GetInstigator(), ActionEffectClass);
 			}

@@ -69,6 +69,13 @@ void UVDActionComponent::AddAction(AActor* Instigator, TSubclassOf<UVDAction> Ac
 		return;
 	}
 
+	// Skip for clients
+	if(!GetOwner()->HasAuthority())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Client attempting to AddAction. [Class %s]"), *GetNameSafe(ActionClass));
+		return;
+	}
+	
 	UVDAction* NewAction = NewObject<UVDAction>(GetOwner(), ActionClass);
 	if(ensure(NewAction))
 	{
@@ -109,6 +116,11 @@ void UVDActionComponent::ServerStartAction_Implementation(AActor* Instigator, FN
 	StartActionByName(Instigator, ActionName);
 }
 
+void UVDActionComponent::ServerStopAction_Implementation(AActor* Instigator, FName ActionName)
+{
+	StopActionByName(Instigator, ActionName);
+}
+
 bool UVDActionComponent::StartActionByName(AActor* Instigator, FName ActionName)
 {
 	for(UVDAction* Action : Actions)
@@ -143,6 +155,12 @@ bool UVDActionComponent::StopActionByName(AActor* Instigator, FName ActionName)
 		{
 			if(Action->IsRunning())
 			{
+				// is Client?
+				if(!GetOwner()->HasAuthority())
+				{
+					ServerStopAction(Instigator, ActionName);
+				}
+				
 				Action->StopAction(Instigator);
 				return true;
 			}
