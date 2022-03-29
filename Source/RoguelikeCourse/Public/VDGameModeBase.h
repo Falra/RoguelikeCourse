@@ -77,7 +77,9 @@ public:
 	virtual void OnActorKilled(AActor* VictimActor, AActor* Killer);
 	
 	AVDGameModeBase();
-	
+
+	virtual void InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage) override;
+
 	virtual void StartPlay() override;
 
 	UFUNCTION(Exec)

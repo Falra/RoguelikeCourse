@@ -25,6 +25,15 @@ AVDGameModeBase::AVDGameModeBase()
 	RequiredPowerupDistance = 2000;
 
 	PlayerStateClass = AVDPlayerState::StaticClass();
+
+	SlotName = "SaveGame01";
+}
+
+void AVDGameModeBase::InitGame(const FString& MapName, const FString& Options, FString& ErrorMessage)
+{
+	Super::InitGame(MapName, Options, ErrorMessage);
+
+	LoadSaveGame();
 }
 
 void AVDGameModeBase::StartPlay()
