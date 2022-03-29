@@ -10,6 +10,7 @@
 class UEnvQuery;
 class UEnvQueryInstanceBlueprintWrapper;
 class UCurveFloat;
+class UVDSaveGame;
 
 /**
  * 
@@ -52,7 +53,13 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category = "AI")
 	UCurveFloat* DifficultyCurve;
-	
+
+	UPROPERTY(EditDefaultsOnly, Category = "SaveGame")
+	FString SlotName;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "SaveGame")
+	UVDSaveGame* CurrentSaveGame; 
+
 	UFUNCTION()
 	void OnSpawnBotQueryCompleted(UEnvQueryInstanceBlueprintWrapper* QueryInstance, EEnvQueryStatus::Type QueryStatus);
 
@@ -75,4 +82,9 @@ public:
 
 	UFUNCTION(Exec)
 	void KillAll();
+
+	UFUNCTION(BlueprintCallable, Category = "SaveGame")
+	void WriteSaveGame();
+
+	void LoadSaveGame();
 };

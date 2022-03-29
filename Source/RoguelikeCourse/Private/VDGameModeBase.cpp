@@ -8,11 +8,13 @@
 #include "VDAttributeComponent.h"
 #include "VDCharacter.h"
 #include "VDPlayerState.h"
+#include "VDSaveGame.h"
 #include "AI/VDAICharacter.h"
 #include "EnvironmentQuery/EnvQueryManager.h"
+#include "Kismet/GameplayStatics.h"
 
 static TAutoConsoleVariable<bool> CVarSpawnBots(TEXT("vd.SpawnBots"), false,
-	TEXT("Enabling spawning of bots via timer"), ECVF_Cheat);
+                                                TEXT("Enabling spawning of bots via timer"), ECVF_Cheat);
 
 AVDGameModeBase::AVDGameModeBase()
 {
@@ -119,7 +121,7 @@ void AVDGameModeBase::OnSpawnBotQueryCompleted(UEnvQueryInstanceBlueprintWrapper
 }
 
 void AVDGameModeBase::OnPowerupSpawnQueryCompleted(UEnvQueryInstanceBlueprintWrapper* QueryInstance,
-	EEnvQueryStatus::Type QueryStatus)
+                                                   EEnvQueryStatus::Type QueryStatus)
 {
 	if (QueryStatus != EEnvQueryStatus::Success)
 	{
@@ -215,5 +217,29 @@ void AVDGameModeBase::RespawnPlayerElapsed(AController* Controller)
 	{
 		Controller->UnPossess();
 		RestartPlayer(Controller);
+	}
+}
+
+void AVDGameModeBase::WriteSaveGame()
+{
+	UGameplayStatics::SaveGameToSlot(CurrentSaveGame, SlotName, 0);
+}
+
+void AVDGameModeBase::LoadSaveGame()
+{
+	if(UGameplayStatics::DoesSaveGameExist(SlotName, 0))
+	{
+		CurrentSaveGame = Cast<UVDSaveGame>(UGameplayStatics::LoadGameFromSlot(SlotName, 0));
+		if(CurrentSaveGame == nullptr)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("Failed to load SaveGame Data."));
+			return;
+		}
+		UE_LOG(LogTemp, Log, TEXT("Loaded SaveGame Data."));
+	}
+	else
+	{
+		CurrentSaveGame = Cast<UVDSaveGame>(UGameplayStatics::CreateSaveGameObject(UVDSaveGame::StaticClass()));
+		UE_LOG(LogTemp, Log, TEXT("Created New SaveGame Data."));
 	}
 }
