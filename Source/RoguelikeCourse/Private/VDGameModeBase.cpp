@@ -317,6 +317,8 @@ void AVDGameModeBase::LoadSaveGame()
 					FObjectAndNameAsStringProxyArchive Archive(MemoryReader, true);
 					Archive.ArIsSaveGame = true;
 					Actor->Serialize(Archive);
+
+					IVDGameplayInterface::Execute_OnActorLoaded(Actor);
 					
 					break;
 				}

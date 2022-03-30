@@ -22,6 +22,8 @@ public:
 
 	void Interact_Implementation(APawn* InstigatorPawn);
 
+	virtual void OnActorLoaded_Implementation() override;
+
 protected:
 
 	UPROPERTY(ReplicatedUsing="OnRep_LidOpened", BlueprintReadOnly, SaveGame) // RepNotify

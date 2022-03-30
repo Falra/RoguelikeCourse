@@ -23,6 +23,11 @@ void AVDItemChest::Interact_Implementation(APawn* InstigatorPawn)
 	OnRep_LidOpened();
 }
 
+void AVDItemChest::OnActorLoaded_Implementation()
+{
+	OnRep_LidOpened();
+}
+
 void AVDItemChest::OnRep_LidOpened()
 {
 	float CurrentPitch = bLidOpened ? TargetPitch : 0.f;
