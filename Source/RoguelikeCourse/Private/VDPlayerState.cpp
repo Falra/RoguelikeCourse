@@ -3,10 +3,7 @@
 
 #include "VDPlayerState.h"
 
-int32 AVDPlayerState::GetCredits() const
-{
-	return Credits;
-}
+#include "VDSaveGame.h"
 
 void AVDPlayerState::AddCredits(int32 Delta)
 {
@@ -40,4 +37,25 @@ bool AVDPlayerState::RemoveCredits(int32 Delta)
 	OnCreditsChanged.Broadcast(this, Credits, -Delta);
 
 	return true;
+}
+
+void AVDPlayerState::SavePlayerState_Implementation(UVDSaveGame* SaveObject)
+{
+	if(SaveObject)
+	{
+		SaveObject->Credits = Credits;
+	}
+}
+
+void AVDPlayerState::LoadPlayerState_Implementation(UVDSaveGame* SaveObject)
+{
+	if(SaveObject)
+	{
+		Credits = SaveObject->Credits;
+	}
+}
+
+int32 AVDPlayerState::GetCredits() const
+{
+	return Credits;
 }

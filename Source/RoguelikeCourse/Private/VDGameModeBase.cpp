@@ -11,6 +11,7 @@
 #include "VDSaveGame.h"
 #include "AI/VDAICharacter.h"
 #include "EnvironmentQuery/EnvQueryManager.h"
+#include "GameFramework/GameStateBase.h"
 #include "Kismet/GameplayStatics.h"
 
 static TAutoConsoleVariable<bool> CVarSpawnBots(TEXT("vd.SpawnBots"), false,
@@ -34,6 +35,18 @@ void AVDGameModeBase::InitGame(const FString& MapName, const FString& Options, F
 	Super::InitGame(MapName, Options, ErrorMessage);
 
 	LoadSaveGame();
+}
+
+void AVDGameModeBase::HandleStartingNewPlayer_Implementation(APlayerController* NewPlayer)
+{
+	Super::HandleStartingNewPlayer_Implementation(NewPlayer);
+
+	AVDPlayerState* PS = NewPlayer->GetPlayerState<AVDPlayerState>();
+	if(PS)
+	{
+		PS->LoadPlayerState(CurrentSaveGame);
+	}
+	
 }
 
 void AVDGameModeBase::StartPlay()
@@ -231,6 +244,17 @@ void AVDGameModeBase::RespawnPlayerElapsed(AController* Controller)
 
 void AVDGameModeBase::WriteSaveGame()
 {
+	// Iterate all player state
+	for (int32 i =0; i < GameState->PlayerArray.Num(); i++)
+	{
+		AVDPlayerState* PS = Cast<AVDPlayerState>(GameState->PlayerArray[i]);
+		if(PS)
+		{
+			PS->SavePlayerState(CurrentSaveGame);
+			break; // Single player realization
+		}
+	}
+	
 	UGameplayStatics::SaveGameToSlot(CurrentSaveGame, SlotName, 0);
 }
 

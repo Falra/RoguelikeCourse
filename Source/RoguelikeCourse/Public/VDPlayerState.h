@@ -7,6 +7,7 @@
 #include "VDPlayerState.generated.h"
 
 class AVDPlayerState;
+class UVDSaveGame;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnCreditsChanged, AVDPlayerState*, PlayerState, int32, NewCredits, int32, Delta);
 
@@ -34,5 +35,11 @@ public:
 	bool RemoveCredits(int32 Delta);
 
 	UPROPERTY(BlueprintAssignable, Category = "Events")
-	FOnCreditsChanged OnCreditsChanged;	
+	FOnCreditsChanged OnCreditsChanged;
+
+	UFUNCTION(BlueprintNativeEvent)
+	void SavePlayerState(UVDSaveGame* SaveObject);
+
+	UFUNCTION(BlueprintNativeEvent)
+	void LoadPlayerState(UVDSaveGame* SaveObject);
 };
