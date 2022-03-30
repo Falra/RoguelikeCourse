@@ -20,6 +20,9 @@ public:
 	/* For movable actors keep location, rotation, scale. */
 	UPROPERTY()
 	FTransform ActorTransform;
+
+	UPROPERTY()
+	TArray<uint8> ByteData;
 };
 
 

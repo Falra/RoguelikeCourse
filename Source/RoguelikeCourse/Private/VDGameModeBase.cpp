@@ -14,6 +14,7 @@
 #include "EnvironmentQuery/EnvQueryManager.h"
 #include "GameFramework/GameStateBase.h"
 #include "Kismet/GameplayStatics.h"
+#include "Serialization/ObjectAndNameAsStringProxyArchive.h"
 
 static TAutoConsoleVariable<bool> CVarSpawnBots(TEXT("vd.SpawnBots"), false,
                                                 TEXT("Enabling spawning of bots via timer"), ECVF_Cheat);
@@ -271,6 +272,13 @@ void AVDGameModeBase::WriteSaveGame()
 		ActorSaveData.ActorName = Actor->GetName();
 		ActorSaveData.ActorTransform = Actor->GetTransform();
 
+		FMemoryWriter MemoryWriter(ActorSaveData.ByteData);
+		FObjectAndNameAsStringProxyArchive Archive(MemoryWriter, true);
+		// Find only variables with UPROPERTY(SaveGame)
+		Archive.ArIsSaveGame = true;
+		
+		Actor->Serialize(Archive);
+
 		CurrentSaveGame->SaveActors.Add(ActorSaveData);
 	}
 	
@@ -302,7 +310,14 @@ void AVDGameModeBase::LoadSaveGame()
 			{
 				if(Actor->GetName() == ActorSaveData.ActorName)
 				{
+					//UE_LOG(LogTemp, Log, TEXT("Load transform for %s"), *ActorSaveData.ActorName);
 					Actor->SetActorTransform(ActorSaveData.ActorTransform);
+
+					FMemoryReader MemoryReader(ActorSaveData.ByteData);
+					FObjectAndNameAsStringProxyArchive Archive(MemoryReader, true);
+					Archive.ArIsSaveGame = true;
+					Actor->Serialize(Archive);
+					
 					break;
 				}
 			}

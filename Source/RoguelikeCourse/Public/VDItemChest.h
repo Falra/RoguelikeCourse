@@ -24,7 +24,7 @@ public:
 
 protected:
 
-	UPROPERTY(ReplicatedUsing="OnRep_LidOpened", BlueprintReadOnly) // RepNotify
+	UPROPERTY(ReplicatedUsing="OnRep_LidOpened", BlueprintReadOnly, SaveGame) // RepNotify
 	bool bLidOpened;
 
 	UFUNCTION()
