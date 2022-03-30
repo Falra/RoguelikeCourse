@@ -7,6 +7,7 @@
 #include "EngineUtils.h"
 #include "VDAttributeComponent.h"
 #include "VDCharacter.h"
+#include "VDGameplayInterface.h"
 #include "VDPlayerState.h"
 #include "VDSaveGame.h"
 #include "AI/VDAICharacter.h"
@@ -254,6 +255,24 @@ void AVDGameModeBase::WriteSaveGame()
 			break; // Single player realization
 		}
 	}
+
+	CurrentSaveGame->SaveActors.Empty();
+	
+	// Iterate the entire world of actors
+	for(FActorIterator It(GetWorld()); It; ++It)
+	{
+		AActor* Actor = * It;
+		if(!Actor->Implements<UVDGameplayInterface>())
+		{
+			continue;
+		}
+
+		FActorSaveData ActorSaveData;
+		ActorSaveData.ActorName = Actor->GetName();
+		ActorSaveData.ActorTransform = Actor->GetTransform();
+
+		CurrentSaveGame->SaveActors.Add(ActorSaveData);
+	}
 	
 	UGameplayStatics::SaveGameToSlot(CurrentSaveGame, SlotName, 0);
 }
@@ -269,6 +288,25 @@ void AVDGameModeBase::LoadSaveGame()
 			return;
 		}
 		UE_LOG(LogTemp, Log, TEXT("Loaded SaveGame Data."));
+
+		// Iterate the entire world of actors
+		for(FActorIterator It(GetWorld()); It; ++It)
+		{
+			AActor* Actor = * It;
+			if(!Actor->Implements<UVDGameplayInterface>())
+			{
+				continue;
+			}
+
+			for (FActorSaveData ActorSaveData : CurrentSaveGame->SaveActors)
+			{
+				if(Actor->GetName() == ActorSaveData.ActorName)
+				{
+					Actor->SetActorTransform(ActorSaveData.ActorTransform);
+					break;
+				}
+			}
+		}
 	}
 	else
 	{
