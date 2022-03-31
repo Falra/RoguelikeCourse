@@ -9,3 +9,16 @@ void AVDPlayerController::SetPawn(APawn* InPawn)
 
 	OnPawnChanged.Broadcast(InPawn);
 }
+
+void AVDPlayerController::BeginPlayingState()
+{
+	BlueprintBeginPlayingState();
+}
+
+
+void AVDPlayerController::OnRep_PlayerState()
+{
+	Super::OnRep_PlayerState();
+
+	OnPlayerStateReceived.Broadcast(PlayerState);
+}
