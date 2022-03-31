@@ -4,6 +4,7 @@
 #include "VDPlayerState.h"
 
 #include "VDSaveGame.h"
+#include "Net/UnrealNetwork.h"
 
 void AVDPlayerState::AddCredits(int32 Delta)
 {
@@ -51,7 +52,9 @@ void AVDPlayerState::LoadPlayerState_Implementation(UVDSaveGame* SaveObject)
 {
 	if(SaveObject)
 	{
-		Credits = SaveObject->Credits;
+		//Credits = SaveObject->Credits;
+		// Makes sure we trigger credits changed event
+		AddCredits(SaveObject->Credits);
 	}
 }
 
@@ -59,3 +62,21 @@ int32 AVDPlayerState::GetCredits() const
 {
 	return Credits;
 }
+
+void AVDPlayerState::OnRep_Credits(int32 OldCredits)
+{
+	OnCreditsChanged.Broadcast(this, Credits, Credits - OldCredits);
+}
+
+
+// void AVDPlayerState::MulticastCredits_Implementation(float NewCredits, float Delta)
+// {
+// 	OnCreditsChanged.Broadcast(this, NewCredits, Delta);
+// }
+
+void AVDPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AVDPlayerState, Credits);
+} 
