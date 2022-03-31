@@ -132,6 +132,11 @@ void UVDAttributeComponent::MulticastHealthChanged_Implementation(AActor* Instig
 	OnHealthChanged.Broadcast(InstigatorActor, this, NewHealth, DeltaHealth);
 }
 
+void UVDAttributeComponent::MulticastRageChanged_Implementation(AActor* InstigatorActor, float NewRage, float Delta)
+{
+	OnRageChanged.Broadcast(InstigatorActor, this, NewRage, Delta);
+}
+
 void UVDAttributeComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
@@ -139,4 +144,7 @@ void UVDAttributeComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>
 	DOREPLIFETIME(UVDAttributeComponent, Health);
 	DOREPLIFETIME(UVDAttributeComponent, HealthMax);
 	// DOREPLIFETIME_CONDITION(UVDAttributeComponent, HealthMax, COND_InitialOnly);
+
+	DOREPLIFETIME(UVDAttributeComponent, Rage);
+	DOREPLIFETIME(UVDAttributeComponent, RageMax);
 }
