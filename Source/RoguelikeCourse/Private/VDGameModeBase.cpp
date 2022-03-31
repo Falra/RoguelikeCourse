@@ -41,14 +41,14 @@ void AVDGameModeBase::InitGame(const FString& MapName, const FString& Options, F
 
 void AVDGameModeBase::HandleStartingNewPlayer_Implementation(APlayerController* NewPlayer)
 {
-	Super::HandleStartingNewPlayer_Implementation(NewPlayer);
-
 	AVDPlayerState* PS = NewPlayer->GetPlayerState<AVDPlayerState>();
-	if(PS)
+	if(ensure(PS))
 	{
 		PS->LoadPlayerState(CurrentSaveGame);
 	}
-	
+
+	Super::HandleStartingNewPlayer_Implementation(NewPlayer);
+
 }
 
 void AVDGameModeBase::StartPlay()
@@ -225,8 +225,10 @@ void AVDGameModeBase::OnActorKilled(AActor* VictimActor, AActor* Killer)
 
 	// Give Credits for kill
 	APawn* KillerPawn = Cast<APawn>(Killer);
-	if (KillerPawn)
+	// Don't credit kills of self
+	if (KillerPawn && KillerPawn != VictimActor)
 	{
+		// Only Players will have a 'PlayerState' instance, bots have nullptr
 		AVDPlayerState* PS = KillerPawn->GetPlayerState<AVDPlayerState>();
 		if (PS) 
 		{
