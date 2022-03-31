@@ -4,6 +4,7 @@
 #include "VDPowerupActor.h"
 
 #include "Components/SphereComponent.h"
+#include "Net/UnrealNetwork.h"
 
 AVDPowerupActor::AVDPowerupActor()
 {
@@ -17,6 +18,7 @@ AVDPowerupActor::AVDPowerupActor()
 	MeshComp->SetupAttachment(RootComponent);
 	
 	RespawnTime = 10.0f;
+	bIsActive = true;
 
 	SetReplicates(true);
 }
@@ -43,8 +45,20 @@ void AVDPowerupActor::HideAndCooldownPowerup()
 
 void AVDPowerupActor::SetPowerupState(bool bNewIsActive)
 {
-	SetActorEnableCollision(bNewIsActive);
-
-	// Set visibility on root and all children
-	RootComponent->SetVisibility(bNewIsActive, true);
+	bIsActive = bNewIsActive;
+	OnRep_IsActive();
 }
+
+void AVDPowerupActor::OnRep_IsActive()
+{
+	SetActorEnableCollision(bIsActive);
+	// Set visibility on root and all children
+	RootComponent->SetVisibility(bIsActive, true);
+}
+
+void AVDPowerupActor::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+
+	DOREPLIFETIME(AVDPowerupActor, bIsActive);
+} 
