@@ -23,6 +23,8 @@ void UVDAction::StartAction_Implementation(AActor* Instigator)
 	RepData.bIsRunning = true;
 	RepData.Instigator = Instigator;
 
+	TimeStarted = GetWorld()->TimeSeconds;
+
 	ActionComponent->OnActionStarted.Broadcast(ActionComponent, this);
 }
 

@@ -47,6 +47,12 @@ void UVDActionEffect::StopAction_Implementation(AActor* Instigator)
 	}
 }
 
+float UVDActionEffect::GetTimeRemaining() const
+{
+	float EndTime = TimeStarted + Duration;
+	return EndTime - GetWorld()->TimeSeconds;
+}
+
 void UVDActionEffect::ExecutePeriodicEffect_Implementation(AActor* Instigator)
 {
 }
