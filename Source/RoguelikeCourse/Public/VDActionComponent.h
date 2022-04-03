@@ -9,6 +9,8 @@
 
 class UVDAction;
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_TwoParams(FOnActionStateChanged, UVDActionComponent*, OwningComp, UVDAction*, Action);
+
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class ROGUELIKECOURSE_API UVDActionComponent : public UActorComponent
 {
@@ -44,8 +46,8 @@ protected:
 
 	UFUNCTION(Server, Reliable)
 	void ServerStopAction(AActor* Instigator, FName ActionName);
-	
-	UPROPERTY(Replicated)
+
+	UPROPERTY(BlueprintReadOnly, Replicated)
 	TArray<UVDAction*> Actions;
 
 	// Granted abilities at game start
@@ -54,7 +56,14 @@ protected:
 	
 	virtual void BeginPlay() override;
 
-public:	
+public:
+
+	UPROPERTY(BlueprintAssignable)
+	FOnActionStateChanged OnActionStarted;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnActionStateChanged OnActionStopped;
+
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
 	virtual bool ReplicateSubobjects(UActorChannel* Channel, FOutBunch* Bunch, FReplicationFlags* RepFlags) override;

@@ -22,6 +22,8 @@ void UVDAction::StartAction_Implementation(AActor* Instigator)
 
 	RepData.bIsRunning = true;
 	RepData.Instigator = Instigator;
+
+	ActionComponent->OnActionStarted.Broadcast(ActionComponent, this);
 }
 
 void UVDAction::StopAction_Implementation(AActor* Instigator)
@@ -36,6 +38,8 @@ void UVDAction::StopAction_Implementation(AActor* Instigator)
 
 	RepData.bIsRunning = false;
 	RepData.Instigator = Instigator;
+
+	ActionComponent->OnActionStopped.Broadcast(ActionComponent, this);
 }
 
 UVDActionComponent* UVDAction::GetOwningComponent() const
