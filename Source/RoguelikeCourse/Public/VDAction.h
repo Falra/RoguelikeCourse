@@ -48,6 +48,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Tags")
 	FGameplayTagContainer BlockedTags;
 
+	UPROPERTY(Replicated)
 	float TimeStarted;
 	
 	UPROPERTY(ReplicatedUsing="OnRep_RepData")

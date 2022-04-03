@@ -3,6 +3,7 @@
 
 #include "VDActionEffect.h"
 #include "VDActionComponent.h"
+#include "GameFramework/GameStateBase.h"
 
 UVDActionEffect::UVDActionEffect()
 {
@@ -49,8 +50,14 @@ void UVDActionEffect::StopAction_Implementation(AActor* Instigator)
 
 float UVDActionEffect::GetTimeRemaining() const
 {
-	float EndTime = TimeStarted + Duration;
-	return EndTime - GetWorld()->TimeSeconds;
+	AGameStateBase* GS = GetWorld()->GetGameState<AGameStateBase>();
+	if(GS)
+	{
+		float EndTime = TimeStarted + Duration;
+		return EndTime - GS->GetServerWorldTimeSeconds();
+	}
+	
+	return Duration;
 }
 
 void UVDActionEffect::ExecutePeriodicEffect_Implementation(AActor* Instigator)

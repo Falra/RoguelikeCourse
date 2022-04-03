@@ -23,7 +23,10 @@ void UVDAction::StartAction_Implementation(AActor* Instigator)
 	RepData.bIsRunning = true;
 	RepData.Instigator = Instigator;
 
-	TimeStarted = GetWorld()->TimeSeconds;
+	if(GetOwningComponent()->GetOwnerRole() == ROLE_Authority)
+	{
+		TimeStarted = GetWorld()->TimeSeconds;
+	}
 
 	ActionComponent->OnActionStarted.Broadcast(ActionComponent, this);
 }
@@ -100,4 +103,5 @@ void UVDAction::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetim
 
 	DOREPLIFETIME(UVDAction, RepData);
 	DOREPLIFETIME(UVDAction, ActionComp);
+	DOREPLIFETIME(UVDAction, TimeStarted);
 }
