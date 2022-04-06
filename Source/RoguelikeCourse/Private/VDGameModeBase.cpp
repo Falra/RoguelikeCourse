@@ -138,7 +138,20 @@ void AVDGameModeBase::OnSpawnBotQueryCompleted(UEnvQueryInstanceBlueprintWrapper
 
 	if(isResult && Locations.IsValidIndex(0))
 	{
-		GetWorld()->SpawnActor<AActor>(MinionClass, Locations[0], FRotator::ZeroRotator);
+		if(MonsterTable)
+		{
+			TArray<FMonsterInfoRow*> Rows;
+			MonsterTable->GetAllRows("", Rows);
+
+			// Get random enemy
+			int32 RandomIndex = FMath::RandRange(0, Rows.Num() - 1);
+			FMonsterInfoRow* SelectedRow = Rows[RandomIndex];
+			GetWorld()->SpawnActor<AActor>(SelectedRow->MonsterClass, Locations[0], FRotator::ZeroRotator);
+		}
+		else
+		{
+			GetWorld()->SpawnActor<AActor>(MinionClass, Locations[0], FRotator::ZeroRotator);
+		}
 
 		DrawDebugSphere(GetWorld(), Locations[0], 50.0f, 20, FColor::Blue, false, 60.0f);
 	}
