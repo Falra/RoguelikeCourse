@@ -6,6 +6,8 @@
 #include "VDAttributeComponent.h"
 #include "VDPlayerState.h"
 
+#define LOCTEXT_NAMESPACE "InteractableActors"
+
 AVDPowerup_HealthPotion::AVDPowerup_HealthPotion()
 {
 	CreditCost = 50;
@@ -38,9 +40,11 @@ FText AVDPowerup_HealthPotion::GetInteractText_Implementation(APawn* InstigatorP
 	UVDAttributeComponent* AttributeComp = UVDAttributeComponent::GetAttributes(InstigatorPawn);
 	if(AttributeComp && AttributeComp->IsFullHealth())
 	{
-		return NSLOCTEXT("InteractableActors", "HealthPotion_FullHealthWarning", "Already at full health");
+		return LOCTEXT("HealthPotion_FullHealthWarning", "Already at full health");
 	}
 	
-	return FText::Format(NSLOCTEXT("InteractableActors", "HealthPotion_InteractMessage",
+	return FText::Format(LOCTEXT("HealthPotion_InteractMessage",
 			"Cost {0} Credits. Restores health to maximum."), CreditCost);
 }
+
+#undef LOCTEXT_NAMESPACE
