@@ -8,6 +8,7 @@
 #include "VDAttributeComponent.h"
 #include "VDCharacter.h"
 #include "VDGameplayInterface.h"
+#include "VDMonsterData.h"
 #include "VDPlayerState.h"
 #include "VDSaveGame.h"
 #include "AI/VDAICharacter.h"
@@ -146,7 +147,7 @@ void AVDGameModeBase::OnSpawnBotQueryCompleted(UEnvQueryInstanceBlueprintWrapper
 			// Get random enemy
 			int32 RandomIndex = FMath::RandRange(0, Rows.Num() - 1);
 			FMonsterInfoRow* SelectedRow = Rows[RandomIndex];
-			GetWorld()->SpawnActor<AActor>(SelectedRow->MonsterClass, Locations[0], FRotator::ZeroRotator);
+			GetWorld()->SpawnActor<AActor>(SelectedRow->MonsterData->MonsterClass, Locations[0], FRotator::ZeroRotator);
 		}
 		else
 		{

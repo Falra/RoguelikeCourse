@@ -13,6 +13,7 @@ class UEnvQueryInstanceBlueprintWrapper;
 class UCurveFloat;
 class UVDSaveGame;
 class UDataTable;
+class UVDMonsterData;
 
 /* DataTable Row for spawning monsters in game mode */
 USTRUCT(BlueprintType)
@@ -30,7 +31,8 @@ public:
 	}
 	
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
-	TSubclassOf<AActor> MonsterClass;
+	UVDMonsterData* MonsterData;
+	// TSubclassOf<AActor> MonsterClass;
 
 	/* Relative chance to pick this monster */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)	
