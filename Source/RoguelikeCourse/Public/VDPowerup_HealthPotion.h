@@ -22,8 +22,9 @@ protected:
 	// float healt amount?
 
 	public:
+	virtual void Interact_Implementation(APawn* InstigatorPawn) override;
 
-	void Interact_Implementation(APawn* InstigatorPawn) override;
-
+	virtual FText GetInteractText_Implementation(APawn* InstigatorPawn) override;
+	
 	AVDPowerup_HealthPotion();	
 };

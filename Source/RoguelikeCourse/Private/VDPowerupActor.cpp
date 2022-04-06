@@ -28,6 +28,11 @@ void AVDPowerupActor::Interact_Implementation(APawn* InstigatorPawn)
 	// logic in derived classes...
 }
 
+FText AVDPowerupActor::GetInteractText_Implementation(APawn* InstigatorPawn)
+{
+	return FText::GetEmpty();
+}
+
 
 void AVDPowerupActor::ShowPowerup()
 {
