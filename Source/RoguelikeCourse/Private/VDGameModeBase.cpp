@@ -20,7 +20,7 @@
 #include "RoguelikeCourse/RoguelikeCourse.h"
 #include "Serialization/ObjectAndNameAsStringProxyArchive.h"
 
-static TAutoConsoleVariable<bool> CVarSpawnBots(TEXT("vd.SpawnBots"), false,
+static TAutoConsoleVariable<bool> CVarSpawnBots(TEXT("vd.SpawnBots"), true,
                                                 TEXT("Enabling spawning of bots via timer"), ECVF_Cheat);
 
 AVDGameModeBase::AVDGameModeBase()
