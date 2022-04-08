@@ -5,6 +5,7 @@
 
 #include "DrawDebugHelpers.h"
 #include "EngineUtils.h"
+#include "VDActionComponent.h"
 #include "VDAttributeComponent.h"
 #include "VDCharacter.h"
 #include "VDGameplayInterface.h"
@@ -15,6 +16,7 @@
 #include "EnvironmentQuery/EnvQueryManager.h"
 #include "GameFramework/GameStateBase.h"
 #include "Kismet/GameplayStatics.h"
+#include "RoguelikeCourse/RoguelikeCourse.h"
 #include "Serialization/ObjectAndNameAsStringProxyArchive.h"
 
 static TAutoConsoleVariable<bool> CVarSpawnBots(TEXT("vd.SpawnBots"), false,
@@ -147,13 +149,24 @@ void AVDGameModeBase::OnSpawnBotQueryCompleted(UEnvQueryInstanceBlueprintWrapper
 			// Get random enemy
 			int32 RandomIndex = FMath::RandRange(0, Rows.Num() - 1);
 			FMonsterInfoRow* SelectedRow = Rows[RandomIndex];
-			GetWorld()->SpawnActor<AActor>(SelectedRow->MonsterData->MonsterClass, Locations[0], FRotator::ZeroRotator);
-		}
-		else
-		{
-			GetWorld()->SpawnActor<AActor>(MinionClass, Locations[0], FRotator::ZeroRotator);
-		}
+			UVDMonsterData* MonsterData = SelectedRow->MonsterData;
+			AActor* NewBot = GetWorld()->SpawnActor<AActor>(MonsterData->MonsterClass, Locations[0], FRotator::ZeroRotator);
+			if(NewBot)
+			{
+				LogOnScreen(this, FString::Printf(TEXT("Spawned enemy: %s (%s)"), *GetNameSafe(NewBot), *GetNameSafe(MonsterData)));
 
+				// Grant special actions, buffs etc.
+				UVDActionComponent* ActionComp = NewBot->FindComponentByClass<UVDActionComponent>();
+				if(ActionComp)
+				{
+					for (TSubclassOf<UVDAction> ActionClass : MonsterData->Actions)
+					{
+						ActionComp->AddAction(NewBot, ActionClass);
+					}
+				}
+			}
+		}
+		
 		DrawDebugSphere(GetWorld(), Locations[0], 50.0f, 20, FColor::Blue, false, 60.0f);
 	}
 }
