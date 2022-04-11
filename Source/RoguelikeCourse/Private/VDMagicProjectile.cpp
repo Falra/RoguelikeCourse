@@ -17,6 +17,7 @@ AVDMagicProjectile::AVDMagicProjectile()
 	SphereComponent->OnComponentBeginOverlap.AddDynamic(this, &AVDMagicProjectile::OnBeginOverlap);
 
 	DamageAmount = 20.0f;
+	InitialLifeSpan = 10.0f;
 }
 
 void AVDMagicProjectile::OnBeginOverlap(UPrimitiveComponent* OverlappedComponent, AActor* OtherActor,
