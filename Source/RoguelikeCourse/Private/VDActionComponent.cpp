@@ -143,6 +143,9 @@ bool UVDActionComponent::StartActionByName(AActor* Instigator, FName ActionName)
 			{
 				ServerStartAction(Instigator, ActionName);
 			}
+
+			// Bookmark for Unreal Insights
+			TRACE_BOOKMARK(TEXT("Start action: %s"), *GetNameSafe(Action));
 			
 			Action->StartAction(Instigator);
 			return true;
