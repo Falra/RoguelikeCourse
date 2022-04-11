@@ -8,6 +8,8 @@
 #include "Net/UnrealNetwork.h"
 #include "RoguelikeCourse/RoguelikeCourse.h"
 
+DECLARE_CYCLE_STAT(TEXT("StartActionByName"), STAT_StartActionByName, STATGROUP_VD);
+
 UVDActionComponent::UVDActionComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
@@ -123,6 +125,8 @@ void UVDActionComponent::ServerStopAction_Implementation(AActor* Instigator, FNa
 
 bool UVDActionComponent::StartActionByName(AActor* Instigator, FName ActionName)
 {
+	SCOPE_CYCLE_COUNTER(STAT_StartActionByName);
+	
 	for(UVDAction* Action : Actions)
 	{
 		if (Action && Action->ActionName == ActionName)
