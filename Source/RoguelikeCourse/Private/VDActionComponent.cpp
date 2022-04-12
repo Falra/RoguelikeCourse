@@ -32,6 +32,21 @@ void UVDActionComponent::BeginPlay()
 	}
 }
 
+void UVDActionComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	// Stop all
+	TArray<UVDAction*> ActionCopy = Actions;
+	for(UVDAction* Action: ActionCopy)
+	{
+		if(Action && Action->IsRunning())
+		{
+			Action->StopAction(GetOwner());
+		}
+	}
+	
+	Super::EndPlay(EndPlayReason);
+}
+
 void UVDActionComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
