@@ -30,4 +30,9 @@ void UVDWorldUserWidget::NativeTick(const FGeometry& MyGeometry, float InDeltaTi
 			ParentSizeBox->SetRenderTranslation(ScreenPosition);
 		}
 	}
+
+	if(ParentSizeBox)
+	{
+		ParentSizeBox->SetVisibility(bIsFound ? ESlateVisibility::HitTestInvisible : ESlateVisibility::Collapsed);
+	}
 }
